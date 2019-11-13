@@ -15,7 +15,7 @@ class Conversation(core_models.TimeStampedModel):
         return ", ".join(usernames)
 
     def count_messages(self):
-        return self.count_messages.count()
+        return self.messages.count()
 
     count_messages.short_description = "Number of Messages"
 
@@ -30,8 +30,8 @@ class Message(core_models.TimeStampedModel):
     """ Message Model Definition """
 
     message = models.TextField()
-    user = models.ForeignKey("users.User", on_delete=models.CASCADE)
-    conversation = models.ForeignKey("Conversation", on_delete=models.CASCADE)
+    user = models.ForeignKey("users.User", related_name="messages", on_delete=models.CASCADE)
+    conversation = models.ForeignKey("Conversation", related_name="messages", on_delete=models.CASCADE)
 
     def __str__(self):
-        return f"{self.user} says: {self.message}"
+        return f"{self.user.username} says: {self.message}"
