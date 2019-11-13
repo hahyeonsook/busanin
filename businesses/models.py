@@ -9,7 +9,7 @@ class Photo(core_models.TimeStampedModel):
 
     caption = models.CharField(max_length=80, blank=True)
     file = models.ImageField(upload_to="business_photos")
-    Business = models.ForeignKey(
+    business = models.ForeignKey(
         "Business", related_name="photos", on_delete=models.CASCADE
     )
 
@@ -24,8 +24,8 @@ class Business(core_models.TimeStampedModel):
     name = models.CharField(max_length=80)
     description = models.TextField(default="")
     address = models.CharField(max_length=140)
-    open_time = models.TimeField()
-    close_time = models.TimeField()
+    open_time = models.TimeField(blank=True)
+    close_time = models.TimeField(blank=True)
     businessman = models.ForeignKey(
         "users.User", related_name="businesses", on_delete=models.CASCADE
     )

@@ -12,6 +12,8 @@ black = "*"
 django = "==2.2.5"
 pillow = "*"
 django-phone-field = "*"
+django-seed = "*"
+faker = "*"
 
 [requires]
 python_version = "3.7"
