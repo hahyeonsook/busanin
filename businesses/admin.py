@@ -33,6 +33,10 @@ class BusinessAdmin(admin.ModelAdmin):
         "address",
     )
 
+    inlines = [
+        BusinessPhotoInline,
+    ]
+
 
 @admin.register(models.Photo)
 class BusinessPhotoAdmin(admin.ModelAdmin):
