@@ -10,7 +10,7 @@ class Photo(core_models.TimeStampedModel):
 
     caption = models.CharField(max_length=80, blank=True)
     file = models.ImageField()
-    post = models.ForeignKey("Post", on_delete=models.CASCADE)
+    post = models.ForeignKey("Post", related_name="photos", on_delete=models.CASCADE)
 
     def __str__(self):
         return self.caption
@@ -22,8 +22,12 @@ class Post(core_models.TimeStampedModel):
 
     name = models.CharField(max_length=140)
     description = models.TextField(default="")
-    businesses = models.ForeignKey("businesses.Business", on_delete=models.PROTECT, null=True)
-    user = models.ForeignKey("users.User", on_delete=models.PROTECT)
+    businesses = models.ForeignKey(
+        "businesses.Business", related_name="posts", on_delete=models.PROTECT, null=True
+    )
+    user = models.ForeignKey(
+        "users.User", related_name="posts", on_delete=models.PROTECT
+    )
 
     def __str__(self):
         return self.name
