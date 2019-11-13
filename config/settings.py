@@ -39,7 +39,9 @@ DJANGO_APPS = [
     "django.contrib.staticfiles",
 ]
 
-THIRD_PARTY_APPS = []
+THIRD_PARTY_APPS = [
+    "phone_field",
+]
 
 PROJECT_APPS = [
     "core.apps.CoreConfig",
@@ -47,9 +49,10 @@ PROJECT_APPS = [
     "businesses.apps.BusinessesConfig",
     "posts.apps.PostsConfig",
     "comments.apps.CommentsConfig",
+    "conversations.apps.ConversationsConfig",
 ]
 
-INSTALLED_APPS = DJANGO_APPS + PROJECT_APPS
+INSTALLED_APPS = DJANGO_APPS + PROJECT_APPS + THIRD_PARTY_APPS
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
