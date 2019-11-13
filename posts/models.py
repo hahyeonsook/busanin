@@ -9,7 +9,7 @@ class Photo(core_models.TimeStampedModel):
     """ Photo Model Definition """
 
     caption = models.CharField(max_length=80, blank=True)
-    file = models.ImageField()
+    file = models.ImageField(upload_to="post_photos")
     post = models.ForeignKey("Post", related_name="photos", on_delete=models.CASCADE)
 
     def __str__(self):

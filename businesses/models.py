@@ -8,7 +8,7 @@ class Photo(core_models.TimeStampedModel):
     """ Business Photo Model Definition """
 
     caption = models.CharField(max_length=80, blank=True)
-    file = models.ImageField()
+    file = models.ImageField(upload_to="business_photos")
     Business = models.ForeignKey(
         "Business", related_name="photos", on_delete=models.CASCADE
     )
