@@ -1,0 +1,23 @@
+{% extends "base.html" %} 
+
+{% block page_title %} 
+{{post.name}} 
+{% endblock page_title %} 
+
+{% block content %}
+
+<div>
+    <h1>{{post.name}}</h1>
+    <h2>By {{post.user.username}}</h2>
+</div>
+
+<div>
+    <h3>{{post.description}}<h3>
+</div>
+
+<div>
+    <h3>Businesses</h3>
+    # {{post.businesses.name}}
+</div>
+
+{% endblock content %}
