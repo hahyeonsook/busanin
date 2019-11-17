@@ -1,0 +1,30 @@
+{% extends "base.html" %} 
+
+{% block page_title %} 
+{{business.name}} 
+{% endblock page_title %} 
+
+{% block content %}
+
+<div>
+    <h1>{{business.name}}</h1>
+    <h2>{{business.address}}</h2>
+</div>
+<div>
+    <div>
+        <h2>{{business.open_time}}</h2>
+        <h2>{{business.close_time}}</h2>
+    </div>
+    <h2>{{business.phone}}</h2>
+</div>
+
+<div>
+    <h2>{{business.businessman.username}}</h2>
+    <h2>BOOKMARK</h2>
+</div>
+
+<div>
+    <H3>{{business.description}}</H3>
+</div>
+
+{% endblock content %}
