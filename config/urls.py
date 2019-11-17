@@ -7,6 +7,7 @@ urlpatterns = [
     path("", include("core.urls", namespace="core")),
     path("posts/", include("posts.urls", namespace="posts")),
     path("businesses/", include("businesses.urls", namespace="businesses")),
+    path("users/", include("users.urls", namespace="users")),
     path("admin/", admin.site.urls),
 ]
 
