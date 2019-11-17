@@ -12,6 +12,12 @@
     {% include "partials/nav.html" %}
     </header>
 
+    {% block search-bar %}
+    <form method="get" action="{% url "core:search" %}">
+      <input name="keyword" placeholder="Search"/>
+    </form>
+    {% endblock search-bar %}
+    
     {% block content %}{% endblock content %} 
     
     {% include "partials/footer.html" %}
