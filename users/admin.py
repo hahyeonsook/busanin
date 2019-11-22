@@ -11,7 +11,16 @@ class CustomUserAdmin(UserAdmin):
     fieldsets = UserAdmin.fieldsets + (
         (
             "Custom Profile",
-            {"fields": ("avatar", "gender", "bio", "birthdate", "businessman",)},
+            {
+                "fields": (
+                    "avatar",
+                    "gender",
+                    "bio",
+                    "birthdate",
+                    "businessman",
+                    "login_method",
+                )
+            },
         ),
     )
 
@@ -28,4 +37,5 @@ class CustomUserAdmin(UserAdmin):
         "is_superuser",
         "email_verified",
         "email_secret",
+        "login_method",
     )
