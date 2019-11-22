@@ -26,4 +26,6 @@ class CustomUserAdmin(UserAdmin):
         "businessman",
         "is_staff",
         "is_superuser",
+        "email_verified",
+        "email_secret",
     )
