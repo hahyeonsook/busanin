@@ -3,6 +3,7 @@ from django.views.generic import FormView
 from django.urls import reverse_lazy
 from django.shortcuts import redirect, reverse, render
 from django.contrib.auth import authenticate, login, logout
+from django.views.decorators.csrf import csrf_exempt
 from . import forms, models
 
 
@@ -51,6 +52,7 @@ class SignUpView(FormView):
         return super().form_valid(form)
 
 
+@csrf_exempt
 def complete_verification(request, key):
     try:
         user = models.User.objects.get(email_secret=key)
