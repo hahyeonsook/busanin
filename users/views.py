@@ -210,3 +210,39 @@ def kakao_callback(request):
     except KakaoException:
         return redirect(reverse("users:login"))
 
+
+class UserProfileView(DetailView):
+    
+    """ UserProfileView Definition """
+
+    model = models.User
+    context_object_name = "user_obj"
+
+
+class UpdateProfileView(UpdateView):
+
+    """ UpdateProfileView Definition """
+
+    model = models.User
+    template_name = "users/profile-update.html"
+
+    fields = [
+        "first_name",
+        "last_name",
+        "avatar",
+        "gender",
+        "bio",
+        "birthdate",
+        "businessman",
+    ]
+    context_object_name = "user_obj"
+
+    def get_object(self, queryset=None):
+        return self.request.user
+
+
+class UpdatePasswordView(PasswordChangeView):
+
+    """ UpdatePasswordView Definition """
+
+    template_name = "users/password-update.html"
