@@ -5,7 +5,6 @@
 {% endblock page_title %} 
 
 {% block content %}
-
 <div>
     <h1>{{business.name}}</h1>
     <h2>{{business.address}}</h2>
@@ -19,8 +18,12 @@
 </div>
 
 <div>
-    <h2>{{business.businessman.username}}</h2>
+    <h2><a href="{{business.businessman.get_absolute_url}}">{{business.businessman.username}}</a></h2>
     <h2>BOOKMARK</h2>
+</div>
+<div>
+    <a href="{% url "businesses:update" %}">Edit Business</a>
+    <a href="{% url "businesses:delete" %}">Delete Business</a>
 </div>
 
 <div>

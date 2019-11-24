@@ -1,12 +1,20 @@
 {% extends "base.html" %}
 
 {% block page_title %}
-    Home
+    Business
 {% endblock page_title %}   
 
 {% block content %}
 
-
+<div class="container lg:w-5/12 md:w-1/2 xl:w-1/4 mx-auto my-10 flex flex-col items-center border p-6 border-gray-400">
+    {% include "mixins/user_avatar.html" with user=user_obj %}
+    <div>
+        <span>{{user.username}}</span>
+    </div>
+</div>
+    
+<div>
+    <a href="#">Create Business</a>
     {% for business in businesses %}
         <h3>
             <a href="{% url "businesses:detail" business.pk %}">{{business.name}} / {{business.businessman.username}}</a>
@@ -22,5 +30,6 @@
         <a href="?page={{page_obj.next_page_number}}">Next</a>
     {% endif %}
     </h5>
+</div>
 
 {% endblock content %}
