@@ -1,0 +1,9 @@
+
+{% if user.avatar %}
+<div>
+        {{user.avatar.url}}
+{% else %}
+    
+{% endif %}
+        <span>{{user.first_name|first}}</span>
+</div>

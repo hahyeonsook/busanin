@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block page_title %}
+    {{user_obj.first_name}}'s Profile
+{% endblock page_title %}
+
+{% block content %}
+
+<div class="container lg:w-5/12 md:w-1/2 xl:w-1/4 mx-auto my-10 flex flex-col items-center border p-6 border-gray-400">
+        {% include "mixins/user_avatar.html" with user=user_obj %}
+    <div>
+        <span>{{user_obj.first_name}}</span>
+        <a href="#">Comments</a>
+        <a href="#">Likes</a>
+    </div>
+    <div>
+        <span>{{user_obj.bio}}</span>
+        
+        {% if user == user_obj %}
+            <a href="{% url "users:update" %}">Edit Profile</a>
+            <a href="#">Close My Account</a>
+        {% endif %}
+        
+        {% if user_obj.businessman %}
+            <span>links for his businesses</span>
+        {% endif %}
+    </div>
+        
+</div>
+
+{% endblock content %}
