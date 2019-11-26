@@ -1,6 +1,5 @@
 import os
 import requests
-import json
 from django.views.generic import FormView, DetailView, UpdateView
 from django.contrib.auth.views import PasswordChangeView
 from django.urls import reverse_lazy
