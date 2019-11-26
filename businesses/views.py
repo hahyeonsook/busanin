@@ -38,6 +38,21 @@ class UpdateBusinessView(UpdateView):
 
     def get_object(self, queryset=None):
         return self.request
+class AddPhotoView(user_mixins.LoggedInOnlyView, FormView):
+
+    model = models.Photo
+    template_name = "businesses/photo_create.html"
+    fields = (
+        "caption",
+        "file",
+    )
+    form_class = forms.CreatePhotoForm
+
+    def form_valid(self, form):
+        pk = self.kwargs.get("pk")
+        form.save(pk)
+        messages.success(self.request, "Photo Uploaded")
+        return redirect(reverse("businesses:photos", kwargs={"pk": pk}))
 
 
 class DeleteBusinessView(DeleteView):
