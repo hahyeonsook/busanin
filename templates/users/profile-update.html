@@ -5,17 +5,15 @@
 {% endblock page_title %}
 
 {% block content %}
-<div>
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <input type="submit" value="Update">
-</form>
+<div class="container lg:w-5/12 md:w-1/2 xl:1/4 mx-auto my-10 flex flex-col items-center border p-6 border-gray-400">
 
-{% if user_obj.login_method == "email" %}
-    <a href="{% url "users:password" %}">Change Password</a>
-{% endif %}
-    
+    {% include "mixins/auth/auth_form.html" with form=form cta="Update profile" %}
+
+    <div class="mt-5">
+        {% if user_obj.login_method == "email" %}
+            <a href="{% url "users:password" %}" class="text-green-500 font-medium">Change Password</a>
+        {% endif %}
+    </div>
 
 </div>
 {% endblock content %}

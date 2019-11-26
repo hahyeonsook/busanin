@@ -225,7 +225,7 @@ class UserProfileView(DetailView):
     context_object_name = "user_obj"
 
 
-class UpdateProfileView(UpdateView):
+class UpdateProfileView(mixins.LoggedInOnlyView, SuccessMessageMixin, UpdateView):
 
     """ UpdateProfileView Definition """
 
@@ -241,10 +241,20 @@ class UpdateProfileView(UpdateView):
         "birthdate",
         "businessman",
     ]
+    success_message = "Profile Updated"
+
     context_object_name = "user_obj"
 
     def get_object(self, queryset=None):
         return self.request.user
+
+    def get_form(self, form_class=None):
+        form = super().get_form(form_class=form_class)
+        form.fields["birthdate"].widget.attrs = {"placeholder": "Birthdate 19900101"}
+        form.fields["first_name"].widget.attrs = {"placeholder": "First name"}
+        form.fields["last_name"].widget.attrs = {"placeholder": "Last name"}
+        form.fields["bio"].widget.attrs = {"placeholder": "Bio"}
+        return form
 
 
 class UpdatePasswordView(PasswordChangeView):
