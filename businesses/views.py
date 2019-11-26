@@ -1,31 +1,35 @@
-from django.views.generic import DetailView, ListView, UpdateView, DeleteView
-from django.shortcuts import render
+from django.http import Http404
+from django.views.generic import DetailView, ListView, UpdateView, DeleteView, FormView
+from django.shortcuts import render, redirect, reverse
 from django.urls import reverse_lazy
-from users import models as user_model
-from . import models as business_model
+from django.contrib.auth.decorators import login_required
+from django.contrib import messages
+from django.contrib.messages.views import SuccessMessageMixin
+from users import mixins as user_mixins
+from . import models, forms
 
 
-class BusinessList(ListView):
+class BusinessListView(ListView):
 
     """ BusinessList Definition """
 
-    model = business_model.Business
+    model = models.Business
     paginate_by = 10
     ordering = "created"
     paginate_orphans = 5
     context_object_name = "businesses"
 
 
-class BusinessDetail(DetailView):
+class BusinessDetailView(DetailView):
 
     """ BusinessDetail Definition """
 
-    model = business_model.Business
+    model = models.Business
 
 
-class UpdateBusinessView(UpdateView):
+class EditBusinessView(user_mixins.LoggedInOnlyView, UpdateView):
 
-    model = business_model.Business
+    model = models.Business
     template_name = "businesses/business_update.html"
     fields = [
         "name",
@@ -35,6 +39,15 @@ class UpdateBusinessView(UpdateView):
         "close_time",
         "phone",
     ]
+    success_url = reverse_lazy("businesses:list")
+
+    def get_object(self, queryset=None):
+        business = super().get_object(queryset=queryset)
+        if business.businessman.pk != self.request.user.pk:
+            raise Http404()
+        return business
+
+
 class BusinessPhotosView(user_mixins.LoggedInOnlyView, DetailView):
     model = models.Business
     template_name = "businesses/business_photos.html"
@@ -93,12 +106,10 @@ def delete_photo(request, business_pk, photo_pk):
 
 class DeleteBusinessView(DeleteView):
 
-    model = business_model.Business
+    model = models.Business
     template_name = "businesses/business_delete.html"
     success_url = reverse_lazy("businesses:list")
 
-    def get_object(self, queryset=None):
-        return self.request
 
 class CreateBusinessView(user_mixins.LoggedInOnlyView, FormView):
 
