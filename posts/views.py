@@ -1,6 +1,7 @@
 from django.views.generic import ListView, DetailView
 from django.shortcuts import render
 from . import models
+from comments import forms as comments_forms
 
 
 class HomeView(ListView):
@@ -8,9 +9,9 @@ class HomeView(ListView):
     """ HomeView Definition """
 
     model = models.Post
-    paginate_by = 10
+    paginate_by = 12
     ordering = "created"
-    paginate_orphans = 5
+    paginate_orphans = 6
     context_object_name = "posts"
 
 
