@@ -13,14 +13,18 @@
     {% include "partials/nav.html" %}
     </header>
 
-    {% block search-bar %}
-    <form method="get" action="{% url "core:search" %}">
-      <input name="keyword" placeholder="Search"/>
-    </form>
-    {% endblock search-bar %}
-    
-    {% block content %}{% endblock content %} 
+        {% block search-bar %}
+        <form method="get" action="{% url 'core:search' %}" class="w-9/12">
+          <input class="search-box border px-5 w-full font-medium text-gray-300 placeholder-gray-600 py-3 rounded-sm w-64 shadow-md hover:shadow-lg focus:outline-none" name="keyword" placeholder="Search"/>
+        </form>
+        {% endblock search-bar %}
+
+      </div>
+      {% include "partials/nav.html" %}
+    </header>
   
+    {% block content %}{% endblock content %} 
+
     {% include "partials/footer.html" %}
   </body>
 </html>

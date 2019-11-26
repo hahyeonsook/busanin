@@ -5,17 +5,11 @@
 {% endblock page_title %}
 
 {% block search-bar %}
-
-{% endblock search-bar %}
-
-{% block content %}
-
-    <h2>Search!</h2>
-    <form method="get" action="{% url "core:search" %}">
+    <form class="flex" method="get" action="{% url "core:search" %}">
         {{form.as_p}}
         <button>Search</button>
     </form>
-    <h3>Posts</h3>
+{% endblock search-bar %}
 
     {% for post in posts %}
         <h4>
