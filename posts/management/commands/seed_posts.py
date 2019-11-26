@@ -31,7 +31,6 @@ class Command(BaseCommand):
             {
                 "name": lambda x: seeder.faker.sentence(),
                 "description": lambda x: seeder.faker.text(),
-                "businesses": lambda x: random.choice(all_businesses),
                 "user": lambda x: random.choice(all_users),
             },
         )
@@ -46,6 +45,7 @@ class Command(BaseCommand):
                     file=f"post_photos/{random.randint(1, 33)}.webp",
                     post=post,
                 )
+                post_models.businesses = random.choice(all_businesses)
 
         self.stdout.write(self.style.SUCCESS(f"{number} posts created!"))
 
