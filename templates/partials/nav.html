@@ -1,21 +1,11 @@
-<a href="{% url "core:home" %}">BusanIn</a>
-<ul>
-    <li><a href="#">Chatting</a></li>
-    <li><a href="#">Shop</a></li>
+<ul class="flex items-center text-sm font-medium h-full">
+    <!--<li class="nav_link"><a href="#">Chatting</a></li>
+    <li class="nav_link"><a href="#">Shop</a></li>-->
     {% if user.is_authenticated %}
-        <li><a href="{{user.get_absolute_url}}">{{user.username}}</a></li>
-        <ul>
-            
-            {% if user.businessman %}
-                <li><a href="{% url "businesses:list" %}">Business</a></li>
-            {% endif %}
-            <li><a href="#">Messages</a></li>
-            <li><a href="#">List</a></li>
-            <li><a href="#">Like</a></li>
-            <li><a href="{% url "users:logout" %}">Log out</a></li>
-        </ul>
+        <li class="nav_link"><a href="{{user.get_absolute_url}}">{{user.username}}</a></li>
+        <li class="nav_link"><a href="{% url "users:logout" %}">Log out</a></li>
     {% else %}
-        <li><a href="{% url "users:login" %}">Log in</a></li>
-        <li><a href="{% url "users:signup" %}">Sign Up</a></li>
+        <li class="nav_link"><a href="{% url "users:login" %}">Log in</a></li>
+        <li class="nav_link"><a href="{% url "users:signup" %}">Sign Up</a></li>
     {% endif %}
 </ul>
