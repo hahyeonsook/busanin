@@ -7,11 +7,11 @@
 {% block content %}
 
 <div>
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <input type="submit" value="Update">
-</form>
+    {% include 'mixins/business/business_form.html' with form=form cta="Update business" %}
+
+    <div class="mt-5">
+        <a href="{% url 'businesses:photos' business.pk %}" class="text-green-500 font-medium">Edit Photos</a>
+    </div>
 </div>
 
 {% endblock content %}

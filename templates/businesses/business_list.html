@@ -14,10 +14,10 @@
 </div>
     
 <div>
-    <a href="#">Create Business</a>
+    <a href="{% url "businesses:create" %}">Create Business</a>
     {% for business in businesses %}
         <h3>
-            <a href="{% url "businesses:detail" business.pk %}">{{business.name}} / {{business.businessman.username}}</a>
+            <a href="{% url "businesses:detail" pk=business.pk %}">{{business.name}} / {{business.businessman.username}}</a>
         </h3>
     {% endfor %}
 

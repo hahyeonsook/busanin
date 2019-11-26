@@ -5,29 +5,42 @@
 {% endblock page_title %} 
 
 {% block content %}
-<div>
-    <h1>{{business.name}}</h1>
-    <h2>{{business.address}}</h2>
-</div>
-<div>
-    <div>
-        <h2>{{business.open_time}}</h2>
-        <h2>{{business.close_time}}</h2>
+<div class="container max-w-full h-75vh flex mb-20">
+    <div class="h-full w-1/2 bg-center bg-cover" style="background-image:url({{business.first_photo}})"></div>
+    <div class="h-full w-1/2 flex flex-wrap">
+        {% for photo in business.get_next_four_photos %}
+            <div style="background-image:url({{photo.file.url}})" class="w-1/2 h-auto bg-cover bg-center border-gray-700 border"></div>
+        {% endfor %}
     </div>
-    <h2>{{business.phone}}</h2>
+</div>
+<div class="flex flex-col border-b mx-2 py-2 border-gray-400">
+    <div class="flex my-2 justify-between">
+        <span class=" text-2xl font-medium">{{business.name}}</span>
+        <a class="mr-5" href="{{business.businessman.get_absolute_url}}">
+            {% include "mixins/user_avatar.html" with user=comment.user h_and_w='w-12 h-12' %}
+            <span class="font-medium">{{business.businessman.first_name}}</span>
+        </a>
+    </div>
+    <span class="text-xl">{{business.description}}</span>
+</div>
+<div class="flex flex-row justify-between mx-2 border-b border-gray-400 py-2">
+    <div class="flex flex-col">
+        <span><i class="fas fa-map-marker-alt"></i> {{business.address}}</span>
+        <span><i class="fas fa-phone-alt"></i> {{business.phone}}</span>
+    </div>
+    <div class="flex flex-col">
+        <span>Open:  {{business.open_time}}</span>
+        <span>Close: {{business.close_time}}</span>
+    </div>
 </div>
 
-<div>
-    <h2><a href="{{business.businessman.get_absolute_url}}">{{business.businessman.username}}</a></h2>
-    <h2>BOOKMARK</h2>
-</div>
-<div>
-    <a href="{% url "businesses:update" %}">Edit Business</a>
-    <a href="{% url "businesses:delete" %}">Delete Business</a>
+<div class="flex my-5">
+    {% if business.businessman == user %}
+        <a class="btn-link mx-5" href="{% url "businesses:edit" pk=business.pk %}">Edit</a>
+        <a class="btn-link mx-5" href="{% url "businesses:delete" pk=business.pk %}">Delete</a>
+    {% endif %}
 </div>
 
-<div>
-    <H3>{{business.description}}</H3>
-</div>
+
 
 {% endblock content %}

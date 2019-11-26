@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+
+{% block page_title %}
+    {{business.name}}'s Photos
+{% endblock page_title %}
+
+
+{% block search-bar %}
+    
+{% endblock search-bar %}
+    
+
+{% block content %}
+    <div class="container mx-auto flex flex-col ">
+        <div class="my-10 w-full">
+            <a href="{% url 'businesses:add-photos' business.pk %}" class="btn-link w-1/6 block">Upload Photo</a>
+        </div>
+    {% for photo in business.photos.all %}
+        <div class="border p-6 border-gray-400 flex justify-between">
+            <div class="flex items-start">
+                <img src="{{phoso.file.url}}" class="w-32 h-32"/>
+                <span class="text-xl">{{photo.capition}}</span>
+            </div>
+            <div class="flex flex-col w-1/5">
+                <a class="btn-link bg-green-500 mb-6" href="{% url 'businesses:edit-photos' business.pk photo.pk %}">Edit</a>
+                <a class="btn-link bg-red-600" href="{% url 'businesses:delete-photos' business.pk photo.pk %}">Delete</a>
+            </div>    
+        </div>
+    {% endfor %}
+        <div class="flex justify-center mt-5">
+            <a href="{% url 'businesses:edit' business.pk %}" class="text-green-500 font-medium text-xl">Back to edit business</a>
+        </div>
+    </div>
+{% endblock content %}
+    
