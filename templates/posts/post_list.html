@@ -6,21 +6,22 @@
 
 {% block content %}
 
-
-    {% for post in posts %}
-        <h3>
-            <a href="{% url "posts:detail" post.pk %}">{{post.name}} / {{post.user.username}}</a>
-        </h3>
-    {% endfor %}
-
-    <h5>
-    {% if page_obj.has_previous %}
-        <a href="?page={{page_obj.previous_page_number}}">Previous</a>
-    {% endif %}
-    Page {{page_obj.number}} of {{page_obj.paginator.num_pages}}
-    {% if page_obj.has_next %}
-        <a href="?page={{page_obj.next_page_number}}">Next</a>
-    {% endif %}
-    </h5>
-
+    <div class="container mx-auto pb-10">
+        <div class="flex flex-wrap mx-24 mt-10">
+            {% for post in posts %}
+                {% include 'mixins/post_card.html' with post=post %}
+            {% endfor %}
+        </div>
+        <div class="flex items-center justify-center mx-auto container">
+        {% if page_obj.has_previous %}
+            <a href="?page={{page_obj.previous_page_number}}" class="text-500"><i class="fas fa-chevron-left fa-lg"></i></a>
+        {% endif %}
+            <span class="mx-3 font-medium text-lg">
+                {{page_obj.number}} of {{page_obj.paginator.num_pages}}
+            </span>
+        {% if page_obj.has_next %}
+            <a href="?page={{page_obj.next_page_number}}" class="text-500"><i class="fas fa-chevron-right"></i></a>
+        {% endif %}
+        </div>
+    </div>
 {% endblock content %}

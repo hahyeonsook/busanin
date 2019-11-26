@@ -6,19 +6,29 @@
 
 {% block content %}
 
-<div>
-    <h1>{{post.name}}</h1>
-    <h2>By {{post.user.username}}</h2>
-</div>
+<div class="container lg:w-1/1 md:w-3/4 xl:w-1/2 md:my-10 xl:my-20 m-auto flex flex-col items-center border border-gray-400">
 
-<div>
-    <h3>{{post.description}}<h3>
-</div>
+    <div class="container w-full my-2 px-2 font-medium">{{post.name}}</div>
+    <div class="flex">
+        <div class="mx-2 w-1/2 align-bottom">
+            <img class="" src="{{post.first_photo}}">
+        </div>
 
-<div>
-    <h3>Businesses</h3>
-    # {{post.businesses.name}}
-</div>
+        <div class="m-2 w-1/2">
+            <div class="border-b border-gray-400">
+                <h3>{{post.description}}<h3>
+                <div>
+                    # {{post.businesses.name}}
+                </div>
+            </div>
+            <div class="border-b border-gray-400 flex justify-between">
+                <span class="text-sm flex items-center">
+                    <i class="far fa-comment mr-1"></i> {{post.comments.count}}
+                </span>
+                <span>
+                    <i class="far fa-heart mr-1"></i> 3
+                </span>
+            </div>
             <div>
                 {% for comment in post.comments.all %}
                     <div class="border-section">

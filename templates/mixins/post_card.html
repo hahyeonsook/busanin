@@ -1,0 +1,20 @@
+<div class="w-1/4 mb-10 px-2 overflow-hidden">
+    <a href="{% url "posts:detail" post.pk %}">
+        <div class="w-64 h-64 bg-cover bg-center rounded-lg" style="background-image: url({{post.first_photo}});">
+        </div>
+        <div class="flex justify-between">
+            <span class="text-sm flex items-center">
+                <i class="far fa-comment mr-1"></i> {{post.comments.count}}
+            </span>
+            <span>
+                <i class="far fa-heart mr-1"></i>
+            </span>
+        </div>
+        <div class="text-base overflow-hidden h-8 my-1">
+            {{post.name}}
+        </div>
+        <div class="text-sm overflow-hidden h-10 mt-2">
+            {{post.description}}
+        </div>
+    </a>
+</div>
