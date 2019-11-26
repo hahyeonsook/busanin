@@ -257,8 +257,17 @@ class UpdateProfileView(mixins.LoggedInOnlyView, SuccessMessageMixin, UpdateView
         return form
 
 
-class UpdatePasswordView(PasswordChangeView):
+class UpdatePasswordView(
+    mixins.EmailLoginOnlyView, mixins.LoggedInOnlyView, 
+    SuccessMessageMixin, PasswordChangeView
+):
 
     """ UpdatePasswordView Definition """
 
     template_name = "users/password-update.html"
+
+    def get_form(self, form_class=None):
+        form = super().get_form(form_class=form_class)
+        form.fields["old_password"].widget.attrs = {"placeholder": "Current password"}
+        form.fields["new_password"].widget.attrs = {"placeholder": "Cofirm new password"}
+        return form
