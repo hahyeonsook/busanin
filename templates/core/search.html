@@ -11,17 +11,36 @@
     </form>
 {% endblock search-bar %}
 
-    <h3>Posts</h3>
-    {% for post in posts %}
-        <h4>
-            <a href="{% url "posts:detail" post.pk %}">{{post.name}} / {{post.user.username}}</a>
-        </h4>
-    {% endfor %}
+{% block content %}
 
-    <h3>Businesses</h3>
-    {% for business in businesses %}
-        <h4>{{business.name}}</h4>
-    {% endfor %}
+<div class="flex flex-col mx-24 my-10">
+    
+    
+    {% if not posts and not businesses %}
+        <span class="text-lg font-medium text-gray-500 mx-24 mt-10">No Result</span>
+    {% endif %}
+        
+    
+    {% if posts %}
+        <span class="font-medium mx-24 mt-10">Posts</span>
+        <div class="flex flex-wrap mx-24 mt-10">
+            {% for post in posts %}
+                {% include 'mixins/post_card.html' with post=post %}
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    
+    {% if businesses %}
+        <span class="font-medium mx-24 mt-10">Businesses</span>
+        <div class="flex flex-wrap mx-24 mt-10">
+            {% for business in businesses %}
+                {% include 'mixins/business/business_card.html' with business=business %}
+            {% endfor %}
+        </div>
+    {% endif %}
+        
+</div>
 
 
 {% endblock content %}
