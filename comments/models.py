@@ -15,4 +15,4 @@ class Comment(core_models.TimeStampedModel):
     )
 
     def __str__(self):
-        return f"{self.post.name} - {self.comment}"
+        return f"{self.post.name} - {self.comment} by {self.user.username}"

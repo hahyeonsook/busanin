@@ -31,3 +31,7 @@ class Post(core_models.TimeStampedModel):
 
     def __str__(self):
         return self.name
+
+    def count_comments(self):
+        comment = self.comments.all().count()
+        return comment
