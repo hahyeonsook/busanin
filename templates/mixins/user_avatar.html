@@ -1,9 +1,9 @@
 
+{% load static %}
+
 {% if user.avatar %}
-<div>
-        {{user.avatar.url}}
+        <div class="{{h_and_w|default:'h-20 w-20'}} rounded-full bg-cover" style="background-image: url({{user.avatar.url}});">
 {% else %}
-    
+        <div><img class="{{h_and_w|default:'h-20 w-20'}} rounded-full bg-cover" src="{% static 'img/avatar_default.jpg' %}">
 {% endif %}
-        <span>{{user.first_name|first}}</span>
 </div>
