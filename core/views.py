@@ -8,6 +8,7 @@ from . import forms
 
 class SearchView(View):
     def get(self, request):
+        print(request)
         keyword = request.GET.get("keyword")
         contents_arg = {}
 
