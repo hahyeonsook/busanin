@@ -18,7 +18,6 @@ class PostAdmin(admin.ModelAdmin):
     list_display = (
         "user",
         "name",
-        "businesses",
     )
 
     list_filter = (

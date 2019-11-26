@@ -22,9 +22,7 @@ class Post(core_models.TimeStampedModel):
 
     name = models.CharField(max_length=140)
     description = models.TextField(default="")
-    businesses = models.ForeignKey(
-        "businesses.Business", related_name="posts", on_delete=models.PROTECT, null=True
-    )
+    businesses = models.ManyToManyField("businesses.Business", related_name="posts")
     user = models.ForeignKey(
         "users.User", related_name="posts", on_delete=models.PROTECT
     )
