@@ -48,3 +48,17 @@ class DeleteBusinessView(DeleteView):
 
     def get_object(self, queryset=None):
         return self.request
+
+class CreateBusinessView(user_mixins.LoggedInOnlyView, FormView):
+
+    form_class = forms.CreateBusinessForm
+    template_name = "businesses/business_create.html"
+
+    def form_valid(self, form):
+        business = form.save()
+        business.businessman = self.request.user
+        business.save()
+        form.save_m2m()
+        messages.success(self.request, "Businesses Uploaded")
+        return redirect(reverse("businesses:detail", kwargs={"pk": business.pk}))
+
