@@ -9,16 +9,16 @@ from django.contrib.auth import authenticate, login, logout
 from django.core.files.base import ContentFile
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib import messages
-from . import forms, models
+from django.contrib.messages.views import SuccessMessageMixin
+from . import forms, models, mixins
 
 
-class LoginView(FormView):
+class LoginView(mixins.LoggedOutOnlyView, FormView):
 
     """ LoginView Definition """
 
     template_name = "users/login.html"
     form_class = forms.LoginForm
-    success_url = reverse_lazy("core:home")
 
     def form_valid(self, form):
         email = form.cleaned_data.get("email")
@@ -30,13 +30,21 @@ class LoginView(FormView):
 
         return super().form_valid(form)
 
+    def get_success_url(self):
+        next_arg = self.request.GET.get("next")
+        if next_arg is not None:
+            return next_arg
+        else:
+            return reverse("core:home")
+
 
 def log_out(request):
+    messages.info(request, f"See you later")
     logout(request)
     return redirect(reverse("core:home"))
 
 
-class SignUpView(FormView):
+class SignUpView(mixins.LoggedOutOnlyView, FormView):
 
     """ SignUpView Definition """
 
@@ -46,7 +54,6 @@ class SignUpView(FormView):
 
     def form_valid(self, form):
         form.save()
-
         email = form.cleaned_data.get("email")
         password = form.cleaned_data.get("password")
         user = authenticate(self.request, username=email, password=password)
