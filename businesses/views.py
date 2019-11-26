@@ -35,9 +35,17 @@ class UpdateBusinessView(UpdateView):
         "close_time",
         "phone",
     ]
+class BusinessPhotosView(user_mixins.LoggedInOnlyView, DetailView):
+    model = models.Business
+    template_name = "businesses/business_photos.html"
 
     def get_object(self, queryset=None):
-        return self.request
+        business = super().get_object(queryset=queryset)
+        if business.businessman.pk != self.request.user.pk:
+            raise Http404()
+        return business
+
+
 class AddPhotoView(user_mixins.LoggedInOnlyView, FormView):
 
     model = models.Photo
@@ -53,6 +61,34 @@ class AddPhotoView(user_mixins.LoggedInOnlyView, FormView):
         form.save(pk)
         messages.success(self.request, "Photo Uploaded")
         return redirect(reverse("businesses:photos", kwargs={"pk": pk}))
+
+
+class EditPhotoView(user_mixins.LoggedInOnlyView, SuccessMessageMixin, UpdateView):
+
+    model = models.Photo
+    template_name = "businesses/photo_edit.html"
+    pk_url_kwarg = "photo_pk"
+    success_message = "Photo Updated"
+    fields = ("caption",)
+
+    def get_success_url(self):
+        business_pk = self.kwargs.get("business_pk")
+        return reverse("businesses:photos", kwargs={"pk": business_pk})
+
+
+@login_required
+def delete_photo(request, business_pk, photo_pk):
+    user = request.user
+    try:
+        business = models.Business.objects.get(pk=business_pk)
+        if business.businessman.pk != user.pk:
+            messages.error(request, "Can't delete that photo")
+        else:
+            models.Photo.objects.filter(pk=photo_pk).delete()
+            messages.success(request, "Photo Deleted")
+        return redirect(reverse("businesses:photos", kwargs={"pk": business_pk}))
+    except models.Business.DoesNotExist:
+        return redirect(reverse("core:home"))
 
 
 class DeleteBusinessView(DeleteView):
