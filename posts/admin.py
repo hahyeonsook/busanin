@@ -18,6 +18,7 @@ class PostAdmin(admin.ModelAdmin):
     list_display = (
         "user",
         "name",
+        'created',
     )
 
     list_filter = (
