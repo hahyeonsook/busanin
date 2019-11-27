@@ -32,6 +32,6 @@ class Command(BaseCommand):
         created_clean = flatten(list(created_photos.values()))
         for pk in created_clean:
             user = User.objects.get(pk=pk)
-            user.avatar = f"user_photos/{random.randint(1, 20)}.webp"
+            user.avatar = f"user_photos/{random.randint(1, 20)}.jpg"
 
         self.stdout.write(self.style.SUCCESS(f"{number} users created!"))

@@ -42,7 +42,7 @@ class Command(BaseCommand):
             for i in range(3, random.randint(10, 30)):
                 post_models.Photo.objects.create(
                     caption=seeder.faker.sentence(),
-                    file=f"post_photos/{random.randint(1, 33)}.webp",
+                    file=f"post_photos/{random.randint(1, 33)}.jpg",
                     post=post,
                 )
                 post_models.businesses = random.choice(all_businesses)
