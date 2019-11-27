@@ -23,15 +23,12 @@ class Command(BaseCommand):
             number,
             {
                 "bio": lambda x: seeder.faker.text(),
+                "avatar": lambda x: f"user_photos/{random.randint(1, 20)}.jpg",
                 "is_staff": False,
                 "is_superuser": False,
             },
         )
 
-        created_photos = seeder.execute()
-        created_clean = flatten(list(created_photos.values()))
-        for pk in created_clean:
-            user = User.objects.get(pk=pk)
-            user.avatar = f"user_photos/{random.randint(1, 20)}.jpg"
+        seeder.execute()
 
         self.stdout.write(self.style.SUCCESS(f"{number} users created!"))
