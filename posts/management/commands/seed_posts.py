@@ -39,13 +39,16 @@ class Command(BaseCommand):
         created_clean = flatten(list(created_photos.values()))
         for pk in created_clean:
             post = post_models.Post.objects.get(pk=pk)
+            post.businesses.set(
+                all_businesses[
+                    random.randint(2, 6): random.randint(5, 8)
+                ])
             for i in range(3, random.randint(10, 30)):
                 post_models.Photo.objects.create(
                     caption=seeder.faker.sentence(),
                     file=f"post_photos/{random.randint(1, 33)}.jpg",
                     post=post,
                 )
-                post_models.businesses = random.choice(all_businesses)
 
         self.stdout.write(self.style.SUCCESS(f"{number} posts created!"))
 
