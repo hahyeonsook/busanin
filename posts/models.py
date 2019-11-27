@@ -22,7 +22,9 @@ class Post(core_models.TimeStampedModel):
 
     name = models.CharField(max_length=140)
     description = models.TextField(default="")
-    businesses = models.ManyToManyField("businesses.Business", related_name="posts")
+    businesses = models.ManyToManyField(
+        "businesses.Business", related_name="posts", blank=True
+    )
     user = models.ForeignKey(
         "users.User", related_name="posts", on_delete=models.PROTECT
     )
@@ -36,6 +38,7 @@ class Post(core_models.TimeStampedModel):
 
     def first_photo(self):
         (photo,) = self.photos.all()[:1]
+        print("여기여기", (photo.post.name))
         return photo.file.url
 
     def get_next_four_photos(self):
