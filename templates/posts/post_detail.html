@@ -20,7 +20,7 @@
                 <div>
                         
                     {% for business in post.businesses.all %}
-                        # {{business.name}} 
+                        <a href="{% url 'businesses:detail' business.pk %}"># {{business.name}}</a>
                     {% endfor %}   
                 </div>
             </div>
