@@ -18,7 +18,10 @@
             <div class="border-b border-gray-400">
                 <h3>{{post.description}}<h3>
                 <div>
-                    # {{post.businesses.name}}
+                        
+                    {% for business in post.businesses.all %}
+                        # {{business.name}} 
+                    {% endfor %}   
                 </div>
             </div>
             <div class="border-b border-gray-400 flex justify-between">

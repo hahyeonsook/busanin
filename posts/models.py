@@ -38,7 +38,6 @@ class Post(core_models.TimeStampedModel):
 
     def first_photo(self):
         (photo,) = self.photos.all()[:1]
-        print("여기여기", (photo.post.name))
         return photo.file.url
 
     def get_next_four_photos(self):
