@@ -7,7 +7,6 @@ verify_ssl = true
 flake8 = "*"
 v = {editable = true,version = "*"}
 black = "*"
-awsebcli = "*"
 
 [packages]
 django = "==2.2.5"
@@ -21,7 +20,8 @@ tailwindcss = "*"
 pipenv-to-requirements = "*"
 pipenv = "*"
 psycopg2 = "*"
-
+django-storages = "*"
+boto3 = "*"
 
 [requires]
 python_version = "3.7"

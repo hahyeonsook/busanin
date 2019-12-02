@@ -15,4 +15,4 @@ class Command(BaseCommand):
             User.objects.create_superuser("ebadmin", "qu3230@gmail.com", "123456")
             self.stdout.write(self.style.SUCCESS(f"Superuser created!"))
         else:
-            self.stdout.write(self.style.SUCCESS(f"Superuser Exist!"))
+            self.stdout.write(self.style.SUCCESS(f"Superuser exists!"))
