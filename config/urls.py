@@ -9,6 +9,7 @@ urlpatterns = [
     path("comments/", include("comments.urls", namespace="comments")),
     path("businesses/", include("businesses.urls", namespace="businesses")),
     path("users/", include("users.urls", namespace="users")),
+    path("conversations/", include("conversations.urls", namespace="conversations")),
     path("admin/", admin.site.urls),
 ]
 
