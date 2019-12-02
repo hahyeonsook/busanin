@@ -1,6 +1,6 @@
 from django.shortcuts import redirect, reverse
 from django.urls import reverse_lazy
-from django.views.generic import UpdateView, DeleteView
+from django.views.generic import UpdateView, DeleteView, ListView
 from posts import models as post_models
 from . import models as comment_models
 from . import forms as comment_forms
@@ -18,6 +18,7 @@ def create_comment(request, post):
             comment.post = post
             comment.save()
             return redirect(reverse("posts:detail", kwargs={"pk": post.pk}))
+
 
 
 class EditCommentView(UpdateView):
