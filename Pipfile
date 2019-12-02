@@ -5,21 +5,14 @@ verify_ssl = true
 
 [dev-packages]
 flake8 = "*"
-v = {editable = true,version = "*"}
 black = "*"
 
 [packages]
 django = "==2.2.5"
 pillow = "*"
-django-phone-field = "*"
 django-seed = "*"
-faker = "*"
 django-dotenv = "*"
 requests = "*"
-tailwindcss = "*"
-pipenv-to-requirements = "*"
-pipenv = "*"
-psycopg2 = "*"
 django-storages = "*"
 boto3 = "*"
 
