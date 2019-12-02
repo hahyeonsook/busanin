@@ -39,11 +39,7 @@ DJANGO_APPS = [
     "django.contrib.staticfiles",
 ]
 
-THIRD_PARTY_APPS = [
-    "phone_field",
-    "django_seed",
-    "storages"
-]
+THIRD_PARTY_APPS = ["phone_field", "django_seed", "storages", "django_extensions"]
 
 PROJECT_APPS = [
     "core.apps.CoreConfig",
