@@ -42,7 +42,7 @@ DJANGO_APPS = [
 THIRD_PARTY_APPS = [
     "phone_field",
     "django_seed",
-    "storages",
+    "storages"
 ]
 
 PROJECT_APPS = [
