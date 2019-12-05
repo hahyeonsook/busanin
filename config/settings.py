@@ -25,7 +25,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = os.environ.get("DJANGO_SECRET")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+
+DEBUG = bool(os.environ.get("DEBUG"))
+
 
 ALLOWED_HOSTS = ["busanin.be", ".elasticbeanstalk.com", "127.0.0.1"]
 
