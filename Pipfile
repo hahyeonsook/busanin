@@ -16,6 +16,7 @@ requests = "*"
 django-storages = "*"
 boto3 = "*"
 django-extensions = "*"
+sentry-sdk = "==0.13.4"
 
 [requires]
 python_version = "3.7"
