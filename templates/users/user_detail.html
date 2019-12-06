@@ -7,21 +7,7 @@
 {% block content %}
 
 <div class="min-h-75vh flex">
-    <div class="container lg:w-5/12 md:w-1/2 xl:w-1/4 mx-auto my-10 flex flex-col items-center border p-6 border-gray-400">
-        {% include "mixins/user_avatar.html" with user=user_obj %}
-        <div class="flex flex-col items-center">
-            <div class="text-3xl my-5 border-b w-full text-center">{{user_obj.first_name}}
-                {% if user_obj.businessman %}
-                    <i class="far fa-check-circle fa-sm"></i>
-                {% endif %}  
-            </div>
-            <div class="flex flex-col text-lg">
-                <!--<a href="#" class="mx-2 text-green-500 font-bold">Messages</a>
-                <a href="#" class="mx-2 text-green-500 font-bold">Comments</a>
-                <a href="#" class="mx-2 text-green-500 font-bold">Likes</a>-->
-            </div>
-        </div>
-    </div>
+    {% include 'mixins/user/user_info.html' with user=user_obj %}
     <div class="container lg:w-6/12 md:w-1/2 xl:w-3/5 mx-auto my-10 flex flex-col p-6 border border-gray-400">
         <div class="text-lg mb-5">{{user_obj.bio}}</div>
         <div class="my-5">

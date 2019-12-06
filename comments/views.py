@@ -1,9 +1,16 @@
-from django.shortcuts import redirect, reverse
+from django.shortcuts import redirect, reverse, render
 from django.urls import reverse_lazy
 from django.views.generic import UpdateView, DeleteView, ListView, View
 from posts import models as post_models
+from users import models as user_models
 from . import models as comment_models
 from . import forms
+
+
+class CommentListView(View):
+    def get(self, request, pk):
+        print(request.GET)
+        return render(request, "comments/comment_list.html")
 
 
 class CreateCommentView(View):

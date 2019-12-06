@@ -1,0 +1,15 @@
+<div class="container lg:w-5/12 md:w-1/2 xl:w-1/4 mx-auto my-10 flex flex-col items-center border p-6 border-gray-400">
+    {% include "mixins/user_avatar.html" with user=user %}
+    <div class="flex flex-col items-center">
+        <div class="text-3xl my-5 border-b w-full text-center">{{user.first_name}}
+            {% if user.businessman %}
+                <i class="far fa-check-circle fa-sm"></i>
+            {% endif %}  
+        </div>
+        <div class="flex flex-col text-lg">
+            <a href="{% url 'comments:list' user.pk %}" class="mx-2 text-green-500 font-bold">Comments</a>
+            <!--<a href="#" class="mx-2 text-green-500 font-bold">Messages</a>
+            <a href="#" class="mx-2 text-green-500 font-bold">Likes</a>-->
+        </div>
+    </div>
+</div>
