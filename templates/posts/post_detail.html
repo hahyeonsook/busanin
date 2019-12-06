@@ -6,34 +6,31 @@
 
 {% block content %}
 
-<div class="container lg:w-1/1 md:w-3/4 xl:w-1/2 md:my-10 xl:my-20 m-auto flex flex-col items-center border border-gray-400">
-
-    <div class="container w-full my-2 px-2 font-medium">{{post.name}}</div>
-    <div class="flex">
-        <div class="mx-2 w-1/2 align-bottom">
-            <img class="" src="{{post.first_photo}}">
+<div class="container relative flex flex-col sm:w-75vh lg:w-1/1 md:w-3/4 xl:w-1/2 my-10 m-auto items-center border border-gray-400 sm:h-50vh & my-20 xl:h-75vh">
+    <div class="relative top-0 flex w-full sm:h-10 mt-1 p-2 font-medium border-b border-gray-300">{{post.name}}</div>
+    <div class="flex w-full h-full mb-1">
+        <div class="flex flex-col w-1/2 overflow-y-auto">
+            {% for photo in photos %}
+                <ul class="my-1"><img src="{{photo.file.url}}" class=""></ul>
+            {% endfor %}
         </div>
-
-        <div class="m-2 w-1/2">
-            <div class="border-b border-gray-400">
-                <h3>{{post.description}}<h3>
-                <div>
-                        
+        <div class="flex flex-col w-1/2">
+            <div class="flex flex-col sm:h-40 xl:h-25vh mt-1 p-1 overflow-y-auto">
+                <div class="flex h-full overflow-y-auto mb-1">
+                    {{post.description}}
+                </div>
+                <div class="flex h-10 overflow-y-auto">
                     {% for business in post.businesses.all %}
-                        <a href="{% url 'businesses:detail' business.pk %}"># {{business.name}}</a>
+                        <a class="font-medium" href="{% url 'businesses:detail' business.pk %}">#{{business.name}}</a>
                     {% endfor %}   
                 </div>
             </div>
-            <div class="border-b border-gray-400 flex justify-between">
-                <span class="text-sm flex items-center">
+            <div class="flex flex-col sm:h-40 xl:h-50vh mt-1">
+                <div class="flex h-10 p-1 items-center">
                     <i class="far fa-comment mr-1"></i> {{post.comments.count}}
-                </span>
-                <!--<span>
-                    <i class="far fa-heart mr-1"></i> 3
-                </span>-->
-            </div>
-            <div>
-                {% for comment in post.comments.all %}
+                </div>
+                <div class="flex flex-col h-full p-1 overflow-y-auto">
+                    {% for comment in post.comments.all %}
                     <div class="border-section">
                         <div class="flex justify-between">
                             <div class="flex mb-3">
@@ -56,15 +53,13 @@
                         </div>
                         <p>{{comment.comment}}</p>
                     </div>
-                    
-                {% endfor %}
+                    {% endfor %}
+                </div>
             </div>
-
-            <div>
-                <form class="flex" action="{% url "comments:create" post.pk %}" method="POST">
+            <div class="flex h-15 my-1">
+                <form class="flex w-full h-10" action="{% url "comments:create" post.pk %}" method="POST">
                     {% csrf_token %}
-                    {{form.as_p}}
-                    <input class="w-1/12" type="submit" value="">
+                    <input type="text" name="comment">
                 </form>
             </div>
         </div>

@@ -24,9 +24,6 @@ class CreatePhotoForm(forms.ModelForm):
         model = models.Photo
         fields = ("caption", "file")
 
-    def save(self, pk, *args, **kwargs):
+    def save(self, *args, **kwargs):
         photo = super().save(commit=False)
-
-        business = models.Business.objects.get(pk=pk)
-        photo.business = business
-        photo.save()
+        return photo

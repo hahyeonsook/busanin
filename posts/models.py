@@ -15,6 +15,8 @@ class Photo(core_models.TimeStampedModel):
     def __str__(self):
         return self.caption
 
+    def get_next_photo(self):
+        photo = models.Post.objects.filter(post=self.post)[1:2]
 
 class Post(core_models.TimeStampedModel):
 

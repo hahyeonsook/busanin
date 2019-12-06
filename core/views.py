@@ -8,16 +8,14 @@ from . import forms
 
 class SearchView(View):
     def get(self, request):
-        print(request)
         keyword = request.GET.get("keyword")
+        business = request.GET.get("business")
+        post = request.GET.get("post")
         contents_arg = {}
 
         if keyword:
             form = forms.SearchForm(request.GET)
-            if form.is_valid():
-                business = form.cleaned_data.get("businesses")
-                post = form.cleaned_data.get("posts")
-
+            if business and post:
                 if business and post:
                     businesses = businesses_models.Business.objects.filter(
                         description__icontains=keyword

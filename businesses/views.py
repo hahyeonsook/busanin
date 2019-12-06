@@ -1,5 +1,5 @@
 from django.http import Http404
-from django.views.generic import DetailView, ListView, UpdateView, DeleteView, FormView
+from django.views.generic import DetailView, UpdateView, DeleteView, FormView
 from django.shortcuts import render, redirect, reverse
 from django.urls import reverse_lazy
 from django.contrib.auth.decorators import login_required
@@ -7,17 +7,6 @@ from django.contrib import messages
 from django.contrib.messages.views import SuccessMessageMixin
 from users import mixins as user_mixins
 from . import models, forms
-
-
-class BusinessListView(ListView):
-
-    """ BusinessList Definition """
-
-    model = models.Business
-    paginate_by = 10
-    ordering = "created"
-    paginate_orphans = 5
-    context_object_name = "businesses"
 
 
 class BusinessDetailView(DetailView):
@@ -39,7 +28,7 @@ class EditBusinessView(user_mixins.LoggedInOnlyView, UpdateView):
         "close_time",
         "phone",
     ]
-    success_url = reverse_lazy("businesses:list")
+    success_url = reverse_lazy("core:home")
 
     def get_object(self, queryset=None):
         business = super().get_object(queryset=queryset)
@@ -70,10 +59,14 @@ class AddPhotoView(user_mixins.LoggedInOnlyView, FormView):
     form_class = forms.CreatePhotoForm
 
     def form_valid(self, form):
+        photo = form.save(self)
         pk = self.kwargs.get("pk")
-        form.save(pk)
+        photo.business = models.Business.objects.get(pk=pk)
+        photo.save()
+
+        business = photo.business
         messages.success(self.request, "Photo Uploaded")
-        return redirect(reverse("businesses:photos", kwargs={"pk": pk}))
+        return redirect(reverse("businesses:photos", kwargs={"pk": business.pk}))
 
 
 class EditPhotoView(user_mixins.LoggedInOnlyView, SuccessMessageMixin, UpdateView):
@@ -108,7 +101,7 @@ class DeleteBusinessView(DeleteView):
 
     model = models.Business
     template_name = "businesses/business_delete.html"
-    success_url = reverse_lazy("businesses:list")
+    success_url = reverse_lazy("core:home")
 
 
 class CreateBusinessView(user_mixins.LoggedInOnlyView, FormView):
@@ -122,5 +115,5 @@ class CreateBusinessView(user_mixins.LoggedInOnlyView, FormView):
         business.save()
         form.save_m2m()
         messages.success(self.request, "Businesses Uploaded")
-        return redirect(reverse("businesses:detail", kwargs={"pk": business.pk}))
+        return redirect(reverse("businesses:photos", kwargs={"pk": business.pk}))
 
