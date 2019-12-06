@@ -42,7 +42,7 @@
                                     {% include "mixins/user_avatar.html" with user=comment.user h_and_w='w-10 h-10' %}
                                 </div>
                                 <div class="flex flex-col ml-2">
-                                <span class="font-medium">{{comment.user.first_name}}</span>
+                                <a href="{% url 'users:profile' comment.user.pk %}" class="font-medium">{{comment.user.first_name}}</a>
                                 <span class="text-sm text-gray-500">{{comment.created|date:'M Y'}}</span>
                                 </div>
                             </div>

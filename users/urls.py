@@ -1,4 +1,5 @@
 from django.urls import path
+from conversations import views as conv_views
 from . import views
 
 app_name = "users"
