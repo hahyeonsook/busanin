@@ -26,8 +26,8 @@
         <div class="text-lg mb-5">{{user_obj.bio}}</div>
         <div class="my-5">
         {% if user == user_obj %}
-            <a href="{% url "users:update" %}" class="btn-link px-2 text-sm">Edit Profile</a>
-            <!--<a href="#"  class="btn-link px-2 text-sm">Close My Account</a>-->
+            <a href="{% url 'users:update' %}" class="btn-link px-2 text-sm">Edit Profile</a>
+            <a href="{% url 'users:leave' %}"  class="btn-link px-2 text-sm">Close My Account</a>
         {% endif %}
         </div>
         <div class="flex flex-col">

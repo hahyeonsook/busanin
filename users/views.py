@@ -43,6 +43,19 @@ def log_out(request):
     return redirect(reverse("core:home"))
 
 
+def leave(request):
+    login_method = request.user.login_method
+    message = f"Good bye!" if login_method == models.User.LOGIN_EMAIL else f"It will not complete until you disconnect from GitHub. Please disconnect in Github."
+    if login_method == models.User.LOGIN_KAKAO:
+        return redirect(reverse("users:kakao-leave"), request)
+    else:
+        if request.method == 'POST':
+            request.user.delete()
+            messages.info(request, message)
+            return redirect(reverse("core:home"))
+        return render(request, "users/leave.html")
+    
+
 class SignUpView(mixins.LoggedOutOnlyView, FormView):
 
     """ SignUpView Definition """
@@ -82,9 +95,10 @@ def complete_verification(request, key):
 # 1. Request a user's Github identity
 def github_login(request):
     client_id = os.environ.get("GH_ID")
-    redirect_uri = "https://busanin.be/users/login/github/callback"
+    domain = os.environ.get("DOMAIN")
+    redirect_uri = f"{domain}/users/login/github/callback"
     return redirect(
-        f"https://github.com/login/oauth/authorize?client_id={client_id}&redirect_uri={redirect_uri}&scope=read:user",
+        f"https://github.com/login/oauth/authorize?client_id={client_id}&redirect_uri={redirect_uri}&scope=read:user"
     )
 
 
@@ -111,7 +125,7 @@ def github_callback(request):
             if error is not None:
                 raise GithubException("Can't get access token")
             else:
-                access_token = token_json.get("access_token", None)
+                access_token = token_json.get("access_token")
                 profile_request = requests.get(
                     f"https://api.github.com/user",
                     headers={
@@ -119,9 +133,8 @@ def github_callback(request):
                         "Accept": "application/json",
                     },
                 )
-
                 profile_json = profile_request.json()
-                username = profile_json.get("login", None)
+                username = profile_json.get("email", None)
                 # Github login using OAuth
                 if username is not None:
                     name = profile_json.get("name")
@@ -156,9 +169,58 @@ def github_callback(request):
         return redirect(reverse("users:login"))
 
 
+def kakao_leave(request):
+    client_id = os.environ.get("KAKAO_ID")
+    domain = os.environ.get("DOMAIN")
+    redirect_uri = f"{domain}/users/leave/kakao/callback"
+    return redirect(
+        f"https://kauth.kakao.com/oauth/authorize?client_id={client_id}&redirect_uri={redirect_uri}&response_type=code"
+    )
+
+
+def kakao_leave_callback(request):
+    try:
+        code = request.GET.get("code", None)
+        client_id = os.environ.get("KAKAO_ID")
+        domain = os.environ.get("DOMAIN")
+        redirect_uri = f"{domain}/users/leave/kakao/callback"
+        token_request = requests.get(
+            f"https://kauth.kakao.com/oauth/token?grant_type=authorization_code&client_id={client_id}&redirect_uri={redirect_uri}&code={code}"
+        )
+        token_json = token_request.json()
+        error = token_json.get("error", None)
+
+        if error is not None:
+            raise KakaoException("Can't get authorization code.")
+        access_token = token_json.get("access_token")
+        profile_request = requests.get(
+            "https://kapi.kakao.com/v2/user/me",
+            headers={
+                "Authorization": f"Bearer {access_token}",
+                "Content-type": "application/x-www-form-urlencoded;charset=utf-8",
+            },
+        )
+        profile_json = profile_request.json().get("kakao_account")
+        email = profile_json.get("email", None)
+        
+        leave_request = requests.post(f"https://kapi.kakao.com//v1/user/unlink", headers={"Authorization": f"Bearer {access_token}"})
+        leave_id = leave_request.json().get("id", None)
+
+        if leave_id is not None:
+            user = models.User.objects.get(email=email)
+            user.delete()
+            messages.info(request, f"Good bye!")
+            return redirect(reverse("core:home"))
+
+    except KakaoException as e:
+        messages.error(request, e)
+        return redirect(reverse("core:home"))
+
+
 def kakao_login(request):
     client_id = os.environ.get("KAKAO_ID")
-    redirect_uri = "https://busanin.be/users/login/kakao/callback"
+    domain = os.environ.get("DOMAIN")
+    redirect_uri = f"{domain}/users/login/kakao/callback"
     return redirect(
         f"https://kauth.kakao.com/oauth/authorize?client_id={client_id}&redirect_uri={redirect_uri}&response_type=code"
     )
@@ -168,11 +230,12 @@ class KakaoException(Exception):
     pass
 
 
-def kakao_callback(request):
+def kakao_login_callback(request):
     try:
         code = request.GET.get("code", None)
         client_id = os.environ.get("KAKAO_ID")
-        redirect_uri = "https://busanin.be/users/login/kakao/callback"
+        domain = os.environ.get("DOMAIN")
+        redirect_uri = f"{domain}/users/login/kakao/callback"
         token_request = requests.get(
             f"https://kauth.kakao.com/oauth/token?grant_type=authorization_code&client_id={client_id}&redirect_uri={redirect_uri}&code={code}"
         )
@@ -257,7 +320,7 @@ class UpdateProfileView(mixins.LoggedInOnlyView, SuccessMessageMixin, UpdateView
 
     def get_form(self, form_class=None):
         form = super().get_form(form_class=form_class)
-        form.fields["birthdate"].widget.attrs = {"placeholder": "Birthdate 19900101"}
+        form.fields["birthdate"].widget.attrs = {"placeholder": "Birthdate"}
         form.fields["first_name"].widget.attrs = {"placeholder": "First name"}
         form.fields["last_name"].widget.attrs = {"placeholder": "Last name"}
         form.fields["bio"].widget.attrs = {"placeholder": "Bio"}

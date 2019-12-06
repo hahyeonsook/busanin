@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block page_title %}
+    Closed Account
+{% endblock page_title %}
+
+{% block search-bar %}
+{% endblock search-bar %}
+    
+{% block content %}
+    <div class="container lg:w-5/12 md:w-1/2 xl:w-1/4 mx-auto my-10 border p-6 border-gray-40">
+        <form action="" method="post">
+            {% csrf_token %}
+            <p class="text-lg my-10 text-center">Do you want to leave?</p>
+            <div class="flex justify-between mx-5">
+                <input class="btn-link px-2 text-sm mr-5" type="submit" value="Leave">
+                <a class="btn-link bg-red-500 px-2 text-sm" href="{% url 'core:home' %}"> Cancel </a>
+            </div>
+        </form>
+    </div>
+{% endblock content %}
