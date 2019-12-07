@@ -1,14 +1,17 @@
 from django.db import models
-from core import models as core_models
+from core import models as core_model
+from users import models as users_model
 
 
-class Comment(core_models.TimeStampedModel):
+class Comment(core_model.TimeStampedModel):
 
     """ Comment Model Definition """
 
     comment = models.TextField()
     user = models.ForeignKey(
-        "users.User", related_name="comments", on_delete=models.PROTECT
+        "users.User",
+        related_name="comments",
+        on_delete=models.SET(users_model.set_FkUser),
     )
     post = models.ForeignKey(
         "posts.Post", related_name="comments", on_delete=models.CASCADE

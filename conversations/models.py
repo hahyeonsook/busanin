@@ -1,8 +1,9 @@
 from django.db import models
-from core import models as core_models
+from core import models as core_model
+from users import models as users_model
 
 
-class Conversation(core_models.TimeStampedModel):
+class Conversation(core_model.TimeStampedModel):
 
     """ Conversation Model Definition """
 
@@ -33,7 +34,7 @@ class Conversation(core_models.TimeStampedModel):
         return users
 
 
-class Message(core_models.TimeStampedModel):
+class Message(core_model.TimeStampedModel):
 
     """ Message Model Definition """
 
@@ -42,7 +43,9 @@ class Message(core_models.TimeStampedModel):
         "users.User", related_name="messages", on_delete=models.CASCADE
     )
     conversation = models.ForeignKey(
-        "Conversation", related_name="messages", on_delete=models.CASCADE
+        "Conversation",
+        related_name="messages",
+        on_delete=models.SET(users_model.set_FkUser),
     )
 
     def __str__(self):

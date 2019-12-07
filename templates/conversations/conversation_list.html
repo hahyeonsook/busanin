@@ -12,6 +12,7 @@
         
         {% if user == user_obj %}
             {% for conversation in user.converstation.all %}
+            {% if conversation.count_count_messages != 0 %} 
             <a href="{% url 'conversations:detail' conversation.pk %}" class="flex border-b py-5">
                 {% for participant in conversation.participants.all %}
                     {% if participant != user %}
@@ -22,7 +23,8 @@
                     <div class="block">{{conversation.messages.last}}</div>
                     <div class="block text-right text-gray-500">{{conversation.messages.last.created|date:'M D'}}</div>
                 </div>
-            </a href="">
+            </a>
+            {% endif %}
             {% endfor %}
         {% endif %}
 

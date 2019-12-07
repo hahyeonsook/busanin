@@ -45,4 +45,3 @@ class Business(core_models.TimeStampedModel):
         photos = self.photos.all()[1:5]
         return photos
 
-    

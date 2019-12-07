@@ -35,14 +35,13 @@ class Command(BaseCommand):
             },
         )
 
-        created_photos = seeder.execute()
-        created_clean = flatten(list(created_photos.values()))
+        created_post = seeder.execute()
+        created_clean = flatten(list(created_post.values()))
         for pk in created_clean:
             post = post_models.Post.objects.get(pk=pk)
             post.businesses.set(
-                all_businesses[
-                    random.randint(2, 6): random.randint(5, 8)
-                ])
+                all_businesses[random.randint(2, 6) : random.randint(5, 8)]
+            )
             for i in range(3, random.randint(10, 30)):
                 post_models.Photo.objects.create(
                     caption=seeder.faker.sentence(),

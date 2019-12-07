@@ -1,10 +1,11 @@
 from django.db import models
-from core import models as core_models
+from core import models as core_model
+from users import models as users_model
 
 # from businesses import models as business_models
 
 
-class Photo(core_models.TimeStampedModel):
+class Photo(core_model.TimeStampedModel):
 
     """ Photo Model Definition """
 
@@ -15,10 +16,8 @@ class Photo(core_models.TimeStampedModel):
     def __str__(self):
         return self.caption
 
-    def get_next_photo(self):
-        photo = models.Post.objects.filter(post=self.post)[1:2]
 
-class Post(core_models.TimeStampedModel):
+class Post(core_model.TimeStampedModel):
 
     """ Post Model Definition """
 
@@ -28,7 +27,7 @@ class Post(core_models.TimeStampedModel):
         "businesses.Business", related_name="posts", blank=True
     )
     user = models.ForeignKey(
-        "users.User", related_name="posts", on_delete=models.PROTECT
+        "users.User", related_name="posts", on_delete=models.SET(users_model.set_FkUser)
     )
 
     def __str__(self):

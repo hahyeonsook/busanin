@@ -8,6 +8,10 @@ from django.utils.html import strip_tags
 from django.template.loader import render_to_string
 
 
+def set_FkUser():
+    return User.objects.get(username='unknown')
+
+
 class User(AbstractUser):
 
     """ Custom User Model """
