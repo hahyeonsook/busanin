@@ -9,7 +9,7 @@ from . import forms
 
 class CommentListView(View):
     def get(self, request):
-        return render(request, "comments/comment_list.html")
+        return render(request, "comments/comment_list.html", {'user_obj': request.user})
 
 
 class CreateCommentView(View):
