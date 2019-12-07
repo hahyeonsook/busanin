@@ -8,8 +8,7 @@ from . import forms
 
 
 class CommentListView(View):
-    def get(self, request, pk):
-        print(request.GET)
+    def get(self, request):
         return render(request, "comments/comment_list.html")
 
 

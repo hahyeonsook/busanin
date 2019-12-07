@@ -14,7 +14,7 @@
         <div class="flex justify-between mt-10 items-center">
         {% for user in conversation.participants.all %}
             <div class="flex flex-col items-center">
-                {% include "mixins/user_avatar.html" with user=user %}
+                {% include "mixins/user/user_avatar.html" with user=user %}
                 <span class="mt-2 text-gray-500">{{user.first_name}}</span>
             </div>
             {% if forloop.first %}

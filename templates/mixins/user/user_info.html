@@ -1,5 +1,5 @@
 <div class="container lg:w-5/12 md:w-1/2 xl:w-1/4 mx-auto my-10 flex flex-col items-center border p-6 border-gray-400">
-    {% include "mixins/user_avatar.html" with user=user_obj %}
+    {% include "mixins/user/user_avatar.html" with user=user_obj %}
     <div class="flex flex-col items-center">
         <div class="text-3xl my-5 border-b w-full text-center">{{user_obj.first_name}}
             {% if user_obj.businessman %}
@@ -7,9 +7,9 @@
             {% endif %}  
         </div>
         <div class="flex flex-col text-lg">
-            <a href="{% url 'comments:list' user_obj.pk %}" class="mx-2 text-green-500 font-bold">Comments</a>
+            <a href="{% url 'comments:list' %}" class="mx-2 text-green-500 font-bold">Comments</a>
             {% if user == user_obj %}
-                <a href="#" class="mx-2 text-green-500 font-bold">Messages</a>
+                <a href="{% url 'conversations:list' %}" class="mx-2 text-green-500 font-bold">Message List</a>
             {% else %}
                 <a href="{% url 'conversations:go' a_pk=user.pk b_pk=user_obj.pk %}" class="mx-2 text-green-500 font-bold">Messages</a>
             {% endif %}

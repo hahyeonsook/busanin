@@ -17,7 +17,7 @@
     <div class="flex my-2 justify-between">
         <span class=" text-2xl font-medium">{{business.name}}</span>
         <a class="mr-5" href="{{business.businessman.get_absolute_url}}">
-            {% include "mixins/user_avatar.html" with user=business.businessman h_and_w='w-12 h-12' %}
+            {% include "mixins/user/user_avatar.html" with user=business.businessman h_and_w='w-12 h-12' %}
             <span class="font-medium">{{business.businessman.first_name}}</span>
         </a>
     </div>

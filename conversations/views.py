@@ -54,3 +54,12 @@ class ConversationDetailView(View):
                 message=message, user=self.request.user, conversation=conversation
             )
         return redirect(reverse("conversations:detail", kwargs={"pk": pk}))
+
+
+class ConversationListView(View):
+    def get(self, *args, **kwargs):
+        return render(
+            self.request,
+            "conversations/conversation_list.html",
+            {"user_obj": self.request.user},
+        )
