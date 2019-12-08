@@ -26,7 +26,7 @@ SECRET_KEY = os.environ.get("DJANGO_SECRET")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 
-DEBUG = False
+DEBUG = True
 
 
 ALLOWED_HOSTS = ["busanin.be", ".elasticbeanstalk.com", "127.0.0.1"]
@@ -90,7 +90,7 @@ WSGI_APPLICATION = "config.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
-if DEBUG:
+if DEBUG is False:
     DATABASES = {
         "default": {
             "ENGINE": "django.db.backends.sqlite3",
