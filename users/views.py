@@ -320,7 +320,7 @@ class UpdateProfileView(mixins.LoggedInOnlyView, SuccessMessageMixin, UpdateView
 
     def get_form(self, form_class=None):
         form = super().get_form(form_class=form_class)
-        form.fields["birthdate"].widget.attrs = {"placeholder": "Birthdate"}
+        form.fields["birthdate"].widget.attrs = {"placeholder": "Birthdate yyyy-mm-dd"}
         form.fields["first_name"].widget.attrs = {"placeholder": "First name"}
         form.fields["last_name"].widget.attrs = {"placeholder": "Last name"}
         form.fields["bio"].widget.attrs = {"placeholder": "Bio"}
