@@ -9,7 +9,7 @@ black = "*"
 wheel = "*"
 
 [packages]
-django = "==2.2.8"
+django = "==2.2.10"
 django-seed = "*"
 django-dotenv = "*"
 django-storages = "*"
