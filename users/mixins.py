@@ -5,8 +5,8 @@ from django.contrib.auth.mixins import UserPassesTestMixin, LoginRequiredMixin
 
 
 class EmailLoginOnlyView(UserPassesTestMixin):
-
     def test_func(self):
+        """ 사용자의 id가 email 형식인지 return  """
         return not self.request.user.login_method == "email"
 
     def handle_no_permission(self):
@@ -15,7 +15,6 @@ class EmailLoginOnlyView(UserPassesTestMixin):
 
 
 class LoggedOutOnlyView(UserPassesTestMixin):
-
     def test_func(self):
         return not self.request.user.is_authenticated
 

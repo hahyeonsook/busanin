@@ -6,6 +6,7 @@ verify_ssl = true
 [dev-packages]
 flake8 = "*"
 black = "*"
+wheel = "*"
 
 [packages]
 django = "==2.2.8"
@@ -19,7 +20,8 @@ requests = "*"
 boto3 = "*"
 sentry-sdk = "==0.13.4"
 psycopg2 = "*"
-
+graphviz = "*"
+pydotplus = "*"
 
 [requires]
 python_version = "3.7"

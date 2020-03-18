@@ -1,11 +1,11 @@
 from django.db import models
-from core import models as core_model
+from core.models import TimeStampedModel
 from users import models as users_model
 
 # from businesses import models as business_models
 
 
-class Photo(core_model.TimeStampedModel):
+class Photo(TimeStampedModel):
 
     """ Photo Model Definition """
 
@@ -17,7 +17,7 @@ class Photo(core_model.TimeStampedModel):
         return self.caption
 
 
-class Post(core_model.TimeStampedModel):
+class Post(TimeStampedModel):
 
     """ Post Model Definition """
 

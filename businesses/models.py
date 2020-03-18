@@ -1,9 +1,9 @@
 from django.db import models
 from phone_field import PhoneField
-from core import models as core_models
+from core.models import TimeStampedModel
 
 
-class Photo(core_models.TimeStampedModel):
+class Photo(TimeStampedModel):
 
     """ Business Photo Model Definition """
 
@@ -17,7 +17,7 @@ class Photo(core_models.TimeStampedModel):
         return self.caption
 
 
-class Business(core_models.TimeStampedModel):
+class Business(TimeStampedModel):
 
     """ Business Model Definition """
 

@@ -1,9 +1,9 @@
 from django.db import models
-from core import models as core_model
+from core.models import TimeStampedModel
 from users import models as users_model
 
 
-class Comment(core_model.TimeStampedModel):
+class Comment(TimeStampedModel):
 
     """ Comment Model Definition """
 

@@ -47,7 +47,12 @@ DJANGO_APPS = [
     "django.contrib.staticfiles",
 ]
 
-THIRD_PARTY_APPS = ["phone_field", "django_seed", "storages", "django_extensions"]
+THIRD_PARTY_APPS = [
+    "phone_field",
+    "django_seed",
+    "storages",
+    "django_extensions",
+]
 
 PROJECT_APPS = [
     "core.apps.CoreConfig",
@@ -59,6 +64,11 @@ PROJECT_APPS = [
 ]
 
 INSTALLED_APPS = DJANGO_APPS + PROJECT_APPS + THIRD_PARTY_APPS
+
+GRAPH_MODELS = {
+    "all_applications": True,
+    "group_models": True,
+}
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
