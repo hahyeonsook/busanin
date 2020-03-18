@@ -10,28 +10,13 @@
 - Django 2.2.5
 - Postgres
 - AWS Elastic Beanstalk
+- AWS S3
 
 **Frontend**
 
 - css
 - HTML
-- Tailwinds
-
-## Program Design
-
-### GUI
-
-![gui](./readmeimg/busanin_gui.jpg)
-
-### DB
-
-![users](./readmeimg/busanin_db_users.jpg)
-
-![posts](./readmeimg/busanin_db_posts.jpg)
-
-![businesses](./readmeimg/busanin_db_businesses.jpg)
-
-![comments](./readmeimg/busanin_db_comments.jpg)
+- Tailwinds CSS
 
 ### Running
 
