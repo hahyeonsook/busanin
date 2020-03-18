@@ -9,16 +9,17 @@ black = "*"
 
 [packages]
 django = "==2.2.8"
-pillow = "*"
 django-seed = "*"
 django-dotenv = "*"
-requests = "*"
 django-storages = "*"
-boto3 = "*"
 django-extensions = "*"
+django-phone-field = "*"
+pillow = "*"
+requests = "*"
+boto3 = "*"
 sentry-sdk = "==0.13.4"
 psycopg2 = "*"
-django-phone-field = "*"
+
 
 [requires]
 python_version = "3.7"
