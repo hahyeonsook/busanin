@@ -14,7 +14,7 @@ from . import forms, models, mixins
 
 class LoginView(mixins.LoggedOutOnlyView, FormView):
 
-    """ LoginView Definition """
+    """ LoginView 정의 """
 
     template_name = "users/login.html"
     form_class = forms.LoginForm
@@ -38,32 +38,41 @@ class LoginView(mixins.LoggedOutOnlyView, FormView):
 
 
 def log_out(request):
+
+    """ log out 함수 """
+
     messages.info(request, f"See you later")
     logout(request)
     return redirect(reverse("core:home"))
 
 
 def leave(request):
+
+    """회원 탈퇴 함수"""
+
     login_method = request.user.login_method
-    message = f"Good bye!" if login_method == models.User.LOGIN_EMAIL else f"It will not complete until you disconnect from GitHub. Please disconnect in Github."
+    message = (
+        f"Good bye!"
+        if login_method == models.User.LOGIN_EMAIL
+        else f"It will not complete until you disconnect from GitHub. Please disconnect in Github."
+    )
     if login_method == models.User.LOGIN_KAKAO:
         return redirect(reverse("users:kakao-leave"), request)
     else:
-        if request.method == 'POST':
+        if request.method == "POST":
             request.user.delete()
             messages.info(request, message)
             return redirect(reverse("core:home"))
         return render(request, "users/leave.html")
-    
+
 
 class SignUpView(mixins.LoggedOutOnlyView, FormView):
 
-    """ SignUpView Definition """
+    """ SignUpView 정의 """
 
     template_name = "users/signup.html"
     form_class = forms.SignUpForm
     success_url = reverse_lazy("core:home")
-
 
     def form_valid(self, form):
         form.save()
@@ -85,9 +94,7 @@ def complete_verification(request, key):
         user.email_secret = ""
         user.save()
 
-        # to do: add succes message using django messages framework
     except models.User.DoesNotExist:
-        # to do: add error message using django messages framework
         pass
     return redirect(reverse("core:home"))
 
@@ -170,6 +177,7 @@ def github_callback(request):
 
 
 def kakao_leave(request):
+    """ kakao 회원 탈퇴 """
     client_id = os.environ.get("KAKAO_ID")
     domain = os.environ.get("DOMAIN")
     redirect_uri = f"{domain}/users/leave/kakao/callback"
@@ -202,8 +210,11 @@ def kakao_leave_callback(request):
         )
         profile_json = profile_request.json().get("kakao_account")
         email = profile_json.get("email", None)
-        
-        leave_request = requests.post(f"https://kapi.kakao.com//v1/user/unlink", headers={"Authorization": f"Bearer {access_token}"})
+
+        leave_request = requests.post(
+            f"https://kapi.kakao.com//v1/user/unlink",
+            headers={"Authorization": f"Bearer {access_token}"},
+        )
         leave_id = leave_request.json().get("id", None)
 
         if leave_id is not None:
@@ -288,8 +299,8 @@ def kakao_login_callback(request):
 
 
 class UserProfileView(DetailView):
-    
-    """ UserProfileView Definition """
+
+    """ UserProfileView 정의 """
 
     model = models.User
     context_object_name = "user_obj"
@@ -297,7 +308,7 @@ class UserProfileView(DetailView):
 
 class UpdateProfileView(mixins.LoggedInOnlyView, SuccessMessageMixin, UpdateView):
 
-    """ UpdateProfileView Definition """
+    """ UpdateProfileView 정의 """
 
     model = models.User
     template_name = "users/profile-update.html"
@@ -328,16 +339,20 @@ class UpdateProfileView(mixins.LoggedInOnlyView, SuccessMessageMixin, UpdateView
 
 
 class UpdatePasswordView(
-    mixins.EmailLoginOnlyView, mixins.LoggedInOnlyView, 
-    SuccessMessageMixin, PasswordChangeView
+    mixins.EmailLoginOnlyView,
+    mixins.LoggedInOnlyView,
+    SuccessMessageMixin,
+    PasswordChangeView,
 ):
 
-    """ UpdatePasswordView Definition """
+    """ UpdatePasswordView 정의 """
 
     template_name = "users/password-update.html"
 
     def get_form(self, form_class=None):
         form = super().get_form(form_class=form_class)
         form.fields["old_password"].widget.attrs = {"placeholder": "Current password"}
-        form.fields["new_password"].widget.attrs = {"placeholder": "Cofirm new password"}
+        form.fields["new_password"].widget.attrs = {
+            "placeholder": "Cofirm new password"
+        }
         return form
