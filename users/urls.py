@@ -20,7 +20,9 @@ urlpatterns = [
     path("logout/", views.LogoutView.as_view(), name="logout"),
     path("signup/", views.SignUpView.as_view(), name="signup"),
     path(
-        "verify/<str:key>/", views.complete_verification, name="complete-verification"
+        "verify/<str:key>/",
+        views.CompleteVerificationView.as_view(),
+        name="complete-verification",
     ),
     path("update-profile/", views.UpdateProfileView.as_view(), name="update"),
     path("update-password/", views.UpdatePasswordView.as_view(), name="password"),

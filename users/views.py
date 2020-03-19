@@ -15,12 +15,13 @@ from django.contrib.messages.views import SuccessMessageMixin
 from . import forms, models, mixins
 
 
-class LoginView(mixins.LoggedOutOnlyMixin, FormView):
+class LoginView(mixins.LoggedOutOnlyMixin, SuccessMessageMixin, FormView):
 
     """ Login View 정의 """
 
     template_name = "users/login.html"
     form_class = forms.LoginForm
+    success_message = "로그인 되었습니다!"
 
     def form_valid(self, form):
         email = form.cleaned_data.get("email")
@@ -319,7 +320,7 @@ def kakao_login_callback(request):
         return redirect(reverse("users:login"))
 
 
-class UserProfileView(DetailView):
+class UserProfileView(mixins.LoggedOutOnlyMixin, DetailView):
 
     """ UserProfileView 정의 """
 
@@ -343,7 +344,7 @@ class UpdateProfileView(mixins.LoggedInOnlyMixin, SuccessMessageMixin, UpdateVie
         "birthdate",
         "businessman",
     ]
-    success_message = "Profile Updated"
+    success_message = "사용자 정보가 변경되었습니다."
 
     context_object_name = "user_obj"
 
@@ -369,6 +370,7 @@ class UpdatePasswordView(
     """ UpdatePasswordView 정의 """
 
     template_name = "users/password-update.html"
+    success_message = "비밀번호가 변경되었습니다."
 
     def get_form(self, form_class=None):
         form = super().get_form(form_class=form_class)
