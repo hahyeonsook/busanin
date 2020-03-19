@@ -117,19 +117,7 @@ class CompleteVerificationView(mixins.NotFormSuceesMessageMixin, RedirectView):
 
         except models.User.DoesNotExist:
             messages.error(self.request, "사용자가 존재하지 않습니다.")
-
-
-@csrf_exempt
-def complete_verification(request, key):
-    try:
-        user = models.User.objects.get(email_secret=key)
-        user.email_verified = True
-        user.email_secret = ""
-        user.save()
-
-    except models.User.DoesNotExist:
-        pass
-    return redirect(reverse("core:home"))
+        return super(CompleteVerificationView, self).get(request, *args, **kwargs)
 
 
 # 1. Request a user's Github identity
