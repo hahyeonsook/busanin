@@ -7,7 +7,7 @@ from users import models as users_model
 
 class Photo(TimeStampedModel):
 
-    """ Photo Model Definition """
+    """ Photo Model 정의 """
 
     caption = models.CharField(max_length=80, blank=True)
     file = models.ImageField(upload_to="post_photos")
@@ -19,7 +19,7 @@ class Photo(TimeStampedModel):
 
 class Post(TimeStampedModel):
 
-    """ Post Model Definition """
+    """ Post Model 정의 """
 
     name = models.CharField(max_length=140)
     description = models.TextField(default="")

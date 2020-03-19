@@ -1,13 +1,12 @@
 from django.views.generic import ListView, DetailView
-from django.shortcuts import render
-from django.core.paginator import Paginator
+
 from . import models
 from comments import forms as comments_forms
 
 
 class HomeView(ListView):
 
-    """ HomeView Definition """
+    """ HomeView 정의 """
 
     model = models.Post
     paginate_by = 12
@@ -18,7 +17,7 @@ class HomeView(ListView):
 
 class PostDetail(DetailView):
 
-    """ PostDetail Definition """
+    """ PostDetail 정의 """
 
     model = models.Post
 
