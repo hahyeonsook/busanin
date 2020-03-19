@@ -20,4 +20,4 @@
 
 ### Running
 
-[![busanin](https://img.youtube.com/vi/NV_fJ2Fq48E/0.jpg)](https://youtu.be/NV_fJ2Fq48E)
+[![busanin](https://img.youtube.com/vi/NV_fJ2Fq48E/0.jpg)](https://www.youtube.com/watch?v=nTb7JKrVl7Q&t=268s)
