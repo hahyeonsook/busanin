@@ -5,7 +5,7 @@ from django.urls import reverse_lazy
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.contrib.messages.views import SuccessMessageMixin
-from users import mixins as user_mixins
+from core import mixins
 from . import models, forms
 
 
@@ -16,7 +16,7 @@ class BusinessDetailView(DetailView):
     model = models.Business
 
 
-class EditBusinessView(user_mixins.LoggedInOnlyView, UpdateView):
+class EditBusinessView(mixins.LoggedInOnlyMixin, UpdateView):
 
     model = models.Business
     template_name = "businesses/business_update.html"
@@ -37,7 +37,7 @@ class EditBusinessView(user_mixins.LoggedInOnlyView, UpdateView):
         return business
 
 
-class BusinessPhotosView(user_mixins.LoggedInOnlyView, DetailView):
+class BusinessPhotosView(mixins.LoggedInOnlyMixin, DetailView):
     model = models.Business
     template_name = "businesses/business_photos.html"
 
@@ -48,7 +48,7 @@ class BusinessPhotosView(user_mixins.LoggedInOnlyView, DetailView):
         return business
 
 
-class AddPhotoView(user_mixins.LoggedInOnlyView, FormView):
+class AddPhotoView(mixins.LoggedInOnlyMixin, FormView):
 
     model = models.Photo
     template_name = "businesses/photo_create.html"
@@ -69,7 +69,7 @@ class AddPhotoView(user_mixins.LoggedInOnlyView, FormView):
         return redirect(reverse("businesses:photos", kwargs={"pk": business.pk}))
 
 
-class EditPhotoView(user_mixins.LoggedInOnlyView, SuccessMessageMixin, UpdateView):
+class EditPhotoView(mixins.LoggedInOnlyMixin, SuccessMessageMixin, UpdateView):
 
     model = models.Photo
     template_name = "businesses/photo_edit.html"
@@ -104,7 +104,7 @@ class DeleteBusinessView(DeleteView):
     success_url = reverse_lazy("core:home")
 
 
-class CreateBusinessView(user_mixins.LoggedInOnlyView, FormView):
+class CreateBusinessView(mixins.LoggedInOnlyMixin, FormView):
 
     form_class = forms.CreateBusinessForm
     template_name = "businesses/business_create.html"

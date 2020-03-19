@@ -12,7 +12,8 @@ from django.contrib import messages
 
 from django.contrib.messages.views import SuccessMessageMixin
 
-from . import forms, models, mixins
+from core import mixins
+from . import forms, models
 
 
 class LoginView(mixins.LoggedOutOnlyMixin, SuccessMessageMixin, FormView):
