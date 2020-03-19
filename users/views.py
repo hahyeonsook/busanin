@@ -1,20 +1,23 @@
 import os
 import requests
-from django.views.generic import FormView, DetailView, UpdateView
+from django.views.generic import FormView, DetailView, UpdateView, RedirectView
 from django.contrib.auth.views import PasswordChangeView
 from django.urls import reverse_lazy
 from django.shortcuts import redirect, reverse, render
 from django.contrib.auth import authenticate, login, logout
 from django.core.files.base import ContentFile
-from django.views.decorators.csrf import csrf_exempt, csrf_protect
+from django.views.decorators.csrf import csrf_exempt
+from django.utils.decorators import method_decorator
 from django.contrib import messages
+
 from django.contrib.messages.views import SuccessMessageMixin
+
 from . import forms, models, mixins
 
 
-class LoginView(mixins.LoggedOutOnlyView, FormView):
+class LoginView(mixins.LoggedOutOnlyMixin, FormView):
 
-    """ LoginView 정의 """
+    """ Login View 정의 """
 
     template_name = "users/login.html"
     form_class = forms.LoginForm
@@ -37,42 +40,47 @@ class LoginView(mixins.LoggedOutOnlyView, FormView):
             return reverse("core:home")
 
 
-def log_out(request):
+class LogoutView(mixins.LoggedInOnlyMixin, RedirectView):
 
-    """ log out 함수 """
+    """ Logout View 정의 """
 
-    messages.info(request, f"See you later")
-    logout(request)
-    return redirect(reverse("core:home"))
+    url = reverse_lazy("core:home")
+
+    def get(self, request, *args, **kwargs):
+        logout(request)
+        messages.info(request, f"로그아웃 되었습니다.")
+        return super(LogoutView, self).get(request, *args, **kwargs)
 
 
-def leave(request):
+class SignOutView(RedirectView):
 
-    """회원 탈퇴 함수"""
+    """ Sign out View 정의 """
 
-    login_method = request.user.login_method
-    message = (
-        f"Good bye!"
-        if login_method == models.User.LOGIN_EMAIL
-        else f"It will not complete until you disconnect from GitHub. Please disconnect in Github."
-    )
-    if login_method == models.User.LOGIN_KAKAO:
-        return redirect(reverse("users:kakao-leave"), request)
-    else:
-        if request.method == "POST":
+    url = reverse_lazy("core:home")
+
+    def get(self, request, *args, **kwargs):
+
+        login_method = request.user.login_method
+        messages.info(request, f"탈퇴되었습니다! 다시 만날 수 있었으면 좋겠네요!")
+
+        if login_method == models.User.LOGIN_KAKAO:
+            return redirect(reverse("users:kakao-leave"), request)
+        else:
             request.user.delete()
-            messages.info(request, message)
-            return redirect(reverse("core:home"))
-        return render(request, "users/leave.html")
+            return super(SignOutView, self).get(request, *args, **kwargs)
 
 
-class SignUpView(mixins.LoggedOutOnlyView, FormView):
+class SignUpView(mixins.LoggedOutOnlyMixin, FormView):
 
     """ SignUpView 정의 """
 
     template_name = "users/signup.html"
     form_class = forms.SignUpForm
     success_url = reverse_lazy("core:home")
+
+    @method_decorator(csrf_exempt)
+    def dispatch(self, request, *args, **kwargs):
+        return super(SignUpView, self).dispatch(request, *args, **kwargs)
 
     def form_valid(self, form):
         form.save()
@@ -306,7 +314,7 @@ class UserProfileView(DetailView):
     context_object_name = "user_obj"
 
 
-class UpdateProfileView(mixins.LoggedInOnlyView, SuccessMessageMixin, UpdateView):
+class UpdateProfileView(mixins.LoggedInOnlyMixin, SuccessMessageMixin, UpdateView):
 
     """ UpdateProfileView 정의 """
 
@@ -339,8 +347,8 @@ class UpdateProfileView(mixins.LoggedInOnlyView, SuccessMessageMixin, UpdateView
 
 
 class UpdatePasswordView(
-    mixins.EmailLoginOnlyView,
-    mixins.LoggedInOnlyView,
+    mixins.EmailLoginOnlyMixin,
+    mixins.LoggedInOnlyMixin,
     SuccessMessageMixin,
     PasswordChangeView,
 ):

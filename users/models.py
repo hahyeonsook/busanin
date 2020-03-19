@@ -14,7 +14,7 @@ def set_FkUser():
 
 class User(AbstractUser):
 
-    """ Custom User Model """
+    """ Custom User Model 정의 """
 
     GENDER_MALE = "male"
     GENDER_FEMALE = "female"

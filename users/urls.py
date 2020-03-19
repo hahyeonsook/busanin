@@ -5,7 +5,7 @@ from . import views
 app_name = "users"
 
 urlpatterns = [
-    path("leave/", views.leave, name="leave"),
+    path("leave/", views.SignOutView.as_view(), name="leave"),
     path("leave/kakao/", views.kakao_leave, name="kakao-leave"),
     path(
         "leave/kakao/callback/", views.kakao_leave_callback, name="kakao-leave-callback"
@@ -17,7 +17,7 @@ urlpatterns = [
     path(
         "login/kakao/callback/", views.kakao_login_callback, name="kakao-login-callback"
     ),
-    path("logout/", views.log_out, name="logout"),
+    path("logout/", views.LogoutView.as_view(), name="logout"),
     path("signup/", views.SignUpView.as_view(), name="signup"),
     path(
         "verify/<str:key>/", views.complete_verification, name="complete-verification"
