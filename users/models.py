@@ -7,6 +7,8 @@ from django.core.mail import send_mail
 from django.utils.html import strip_tags
 from django.template.loader import render_to_string
 
+from core import managers
+
 
 def set_FkUser():
     return User.objects.get(username="unknown")
@@ -46,6 +48,8 @@ class User(AbstractUser):
     login_method = models.CharField(
         choices=LOGIN_CHOICES, max_length=50, default=LOGIN_EMAIL
     )
+
+    objects = managers.CustomUserManager()
 
     def get_absolute_url(self):
         return reverse("users:profile", kwargs={"pk": self.pk})

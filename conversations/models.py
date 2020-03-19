@@ -5,7 +5,7 @@ from users import models as users_model
 
 class Conversation(TimeStampedModel):
 
-    """ Conversation Model Definition """
+    """ Conversation Model 정의 """
 
     participants = models.ManyToManyField(
         "users.User", related_name="converstation", blank=True
@@ -36,7 +36,7 @@ class Conversation(TimeStampedModel):
 
 class Message(TimeStampedModel):
 
-    """ Message Model Definition """
+    """ Message Model 정의 """
 
     message = models.TextField()
     user = models.ForeignKey(

@@ -3,7 +3,7 @@ import requests
 from django.views.generic import FormView, DetailView, UpdateView, RedirectView
 from django.contrib.auth.views import PasswordChangeView
 from django.urls import reverse_lazy
-from django.shortcuts import redirect, reverse, render
+from django.shortcuts import redirect, reverse
 from django.contrib.auth import authenticate, login, logout
 from django.core.files.base import ContentFile
 from django.views.decorators.csrf import csrf_exempt
@@ -18,7 +18,7 @@ from . import forms, models
 
 class LoginView(mixins.LoggedOutOnlyMixin, SuccessMessageMixin, FormView):
 
-    """ Login View 정의 """
+    """ Log in View """
 
     template_name = "users/login.html"
     form_class = forms.LoginForm
@@ -46,7 +46,7 @@ class LogoutView(
     mixins.LoggedInOnlyMixin, mixins.NotFormSuceesMessageMixin, RedirectView
 ):
 
-    """ Logout View 정의 """
+    """ Log out View """
 
     url = reverse_lazy("core:home")
     success_message = "로그아웃 되었습니다."
@@ -58,7 +58,7 @@ class LogoutView(
 
 class SignOutView(mixins.NotFormSuceesMessageMixin, RedirectView):
 
-    """ Sign out View 정의 """
+    """ Sign out View """
 
     url = reverse_lazy("core:home")
     success_message = "탈퇴되었습니다! 다시 만날 수 있었으면 좋겠네요!"
@@ -77,7 +77,7 @@ class SignOutView(mixins.NotFormSuceesMessageMixin, RedirectView):
 
 class SignUpView(mixins.LoggedOutOnlyMixin, FormView):
 
-    """ SignUpView 정의 """
+    """ Sign Up View """
 
     template_name = "users/signup.html"
     form_class = forms.SignUpForm
@@ -101,7 +101,7 @@ class SignUpView(mixins.LoggedOutOnlyMixin, FormView):
 
 class CompleteVerificationView(mixins.NotFormSuceesMessageMixin, RedirectView):
 
-    """ Verification Complete View 정의 """
+    """ Verification Complete View """
 
     url = reverse_lazy("core:home")
     success_message = "인증이 완료되었습니다."
@@ -321,17 +321,17 @@ def kakao_login_callback(request):
         return redirect(reverse("users:login"))
 
 
-class UserProfileView(mixins.LoggedOutOnlyMixin, DetailView):
+class UserProfileView(DetailView):
 
-    """ UserProfileView 정의 """
+    """ User Profile View """
 
     model = models.User
     context_object_name = "user_obj"
 
 
-class UpdateProfileView(mixins.LoggedInOnlyMixin, SuccessMessageMixin, UpdateView):
+class UpdateProfileView(SuccessMessageMixin, UpdateView):
 
-    """ UpdateProfileView 정의 """
+    """ Update Profile View """
 
     model = models.User
     template_name = "users/profile-update.html"
@@ -368,7 +368,7 @@ class UpdatePasswordView(
     PasswordChangeView,
 ):
 
-    """ UpdatePasswordView 정의 """
+    """ Update Password View """
 
     template_name = "users/password-update.html"
     success_message = "비밀번호가 변경되었습니다."

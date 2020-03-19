@@ -17,7 +17,7 @@ class HomeView(ListView):
 
 class PostDetail(DetailView):
 
-    """ PostDetail 정의 """
+    """ Post Detail View """
 
     model = models.Post
 
