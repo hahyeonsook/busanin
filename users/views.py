@@ -40,34 +40,37 @@ class LoginView(mixins.LoggedOutOnlyMixin, FormView):
             return reverse("core:home")
 
 
-class LogoutView(mixins.LoggedInOnlyMixin, RedirectView):
+class LogoutView(
+    mixins.LoggedInOnlyMixin, mixins.NotFormSuceesMessageMixin, RedirectView
+):
 
     """ Logout View 정의 """
 
     url = reverse_lazy("core:home")
+    success_message = "로그아웃 되었습니다."
 
     def get(self, request, *args, **kwargs):
         logout(request)
-        messages.info(request, f"로그아웃 되었습니다.")
         return super(LogoutView, self).get(request, *args, **kwargs)
 
 
-class SignOutView(RedirectView):
+class SignOutView(mixins.NotFormSuceesMessageMixin, RedirectView):
 
     """ Sign out View 정의 """
 
     url = reverse_lazy("core:home")
+    success_message = "탈퇴되었습니다! 다시 만날 수 있었으면 좋겠네요!"
 
     def get(self, request, *args, **kwargs):
-
-        login_method = request.user.login_method
-        messages.info(request, f"탈퇴되었습니다! 다시 만날 수 있었으면 좋겠네요!")
-
-        if login_method == models.User.LOGIN_KAKAO:
-            return redirect(reverse("users:kakao-leave"), request)
-        else:
-            request.user.delete()
-            return super(SignOutView, self).get(request, *args, **kwargs)
+        try:
+            login_method = request.user.login_method
+            if login_method == models.User.LOGIN_KAKAO:
+                return redirect(reverse("users:kakao-leave"), request)
+            else:
+                request.user.delete()
+        except models.User.Exception:
+            messages.error(f"탈퇴에 실패했습니다!")
+        return super(SignOutView, self).get(request, *args, **kwargs)
 
 
 class SignUpView(mixins.LoggedOutOnlyMixin, FormView):
@@ -92,6 +95,28 @@ class SignUpView(mixins.LoggedOutOnlyMixin, FormView):
             login(self.request, user)
         user.verify_email()
         return super().form_valid(form)
+
+
+class CompleteVerificationView(mixins.NotFormSuceesMessageMixin, RedirectView):
+
+    """ Verification Complete View 정의 """
+
+    url = reverse_lazy("core:home")
+    success_message = "인증이 완료되었습니다."
+
+    @method_decorator(csrf_exempt)
+    def dispatch(self, request, *args, **kwargs):
+        return super(CompleteVerificationView, self).dispatch(request, *args, **kwargs)
+
+    def get(self, request, *args, **kwargs):
+        try:
+            user = models.User.objects.get(email_secret=self.kwargs["key"])
+            user.email_verified = True
+            user.email_secret = ""
+            user.save()
+
+        except models.User.DoesNotExist:
+            messages.error(self.request, "사용자가 존재하지 않습니다.")
 
 
 @csrf_exempt
