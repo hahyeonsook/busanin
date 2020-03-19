@@ -34,3 +34,18 @@ class LoggedInOnlyMixin(LoginRequiredMixin):
     """ 사용자가 Log in 상태가 아닐 때, log in으로 넘겨주는 View """
 
     login_url = reverse_lazy("users:login")
+
+
+class NotFormSuceesMessageMixin:
+
+    """ Form이 아닌 View들에서 SuccessMessage를 추가해주는 View """
+
+    success_message = ""
+
+    def get(self, request, *args, **kwargs):
+
+        if self.success_message:
+            messages.success(self.request, self.success_message)
+
+        return super().get(request, *args, **kwargs)
+
