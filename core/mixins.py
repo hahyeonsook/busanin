@@ -38,7 +38,7 @@ class LoggedInOnlyMixin(LoginRequiredMixin):
 
 class NotFormSuceesMessageMixin:
 
-    """ Form이 아닌 View들에서 SuccessMessage를 추가해주는 View로 만드는 Mixin """
+    """ Form이 아닌 GET하는 View들에서 SuccessMessage를 추가해주는 View로 만드는 Mixin """
 
     success_message = ""
 
