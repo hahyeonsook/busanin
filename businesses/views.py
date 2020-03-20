@@ -1,13 +1,11 @@
 from django.http import Http404
 from django.views.generic import DetailView, UpdateView, DeleteView, FormView
-from django.shortcuts import render, redirect, reverse, HttpResponseRedirect
+from django.shortcuts import redirect, reverse
 from django.urls import reverse_lazy
-from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 
 from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib.auth.mixins import UserPassesTestMixin
-from django.views.generic.edit import DeletionMixin
 
 from core import mixins
 from . import models, forms
@@ -127,24 +125,6 @@ class DeletePhotoView(mixins.LoggedInOnlyMixin, SuccessMessageMixin, DeleteView)
     def get_success_url(self):
         business_pk = self.kwargs.get("business_pk")
         return reverse("businesses:photos", kwargs={"pk": business_pk})
-
-
-"""
-@login_required
-def delete_photo(request, business_pk, photo_pk):
-    user = request.user
-    try:
-        business = models.Business.objects.get(pk=business_pk)
-        if business.businessman.pk != user.pk:
-            messages.error(request, "사진을 삭제할 수 없습니다.")
-        else:
-            models.Photo.objects.filter(pk=photo_pk).delete()
-            messages.success(request, "사진이 삭제되었습니다.")
-        return redirect(reverse("businesses:photos", kwargs={"pk": business_pk}))
-    except models.Business.DoesNotExist:
-        return redirect(reverse("core:home"))
-
-"""
 
 
 class DeleteBusinessView(mixins.LoggedInOnlyMixin, UserPassesTestMixin, DeleteView):
