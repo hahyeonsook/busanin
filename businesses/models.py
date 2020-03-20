@@ -5,7 +5,7 @@ from core.models import TimeStampedModel
 
 class Photo(TimeStampedModel):
 
-    """ Business Photo Model Definition """
+    """ Business Photo Model 정의 """
 
     caption = models.CharField(max_length=80, blank=True)
     file = models.ImageField(upload_to="business_photos")
@@ -19,7 +19,7 @@ class Photo(TimeStampedModel):
 
 class Business(TimeStampedModel):
 
-    """ Business Model Definition """
+    """ Business Model 정의 """
 
     name = models.CharField(max_length=80)
     description = models.TextField(default="")

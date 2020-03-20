@@ -1,10 +1,14 @@
 from django.http import Http404
 from django.views.generic import DetailView, UpdateView, DeleteView, FormView
-from django.shortcuts import render, redirect, reverse
+from django.shortcuts import render, redirect, reverse, HttpResponseRedirect
 from django.urls import reverse_lazy
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+
 from django.contrib.messages.views import SuccessMessageMixin
+from django.contrib.auth.mixins import UserPassesTestMixin
+from django.views.generic.edit import DeletionMixin
+
 from core import mixins
 from . import models, forms
 
@@ -18,6 +22,8 @@ class BusinessDetailView(DetailView):
 
 class EditBusinessView(mixins.LoggedInOnlyMixin, UpdateView):
 
+    """ Edit Business View """
+
     model = models.Business
     template_name = "businesses/business_update.html"
     fields = [
@@ -28,7 +34,15 @@ class EditBusinessView(mixins.LoggedInOnlyMixin, UpdateView):
         "close_time",
         "phone",
     ]
-    success_url = reverse_lazy("core:home")
+
+    # Business Author가 아니면 접근할 수 없도록 Mixin
+    def test_func(self):
+        business = models.Business.objects.get(pk=self.kwargs.get("pk"))
+        return self.request.user == business.user
+
+    def handle_no_permission(self):
+        messages.error(self.request, "접근 권한이 없습니다.")
+        return redirect("core:home")
 
     def get_object(self, queryset=None):
         business = super().get_object(queryset=queryset)
@@ -36,8 +50,14 @@ class EditBusinessView(mixins.LoggedInOnlyMixin, UpdateView):
             raise Http404()
         return business
 
+    def get_success_url(self, **kwargs):
+        return reverse_lazy("businesses:detail", kwargs={"pk": self.kwargs.get("pk")})
+
 
 class BusinessPhotosView(mixins.LoggedInOnlyMixin, DetailView):
+
+    """ Business Photos Detail View """
+
     model = models.Business
     template_name = "businesses/business_photos.html"
 
@@ -48,7 +68,9 @@ class BusinessPhotosView(mixins.LoggedInOnlyMixin, DetailView):
         return business
 
 
-class AddPhotoView(mixins.LoggedInOnlyMixin, FormView):
+class AddPhotoView(mixins.LoggedInOnlyMixin, SuccessMessageMixin, FormView):
+
+    """ Add Photo View """
 
     model = models.Photo
     template_name = "businesses/photo_create.html"
@@ -74,7 +96,7 @@ class EditPhotoView(mixins.LoggedInOnlyMixin, SuccessMessageMixin, UpdateView):
     model = models.Photo
     template_name = "businesses/photo_edit.html"
     pk_url_kwarg = "photo_pk"
-    success_message = "Photo Updated"
+    success_message = "사진을 수정했습니다."
     fields = ("caption",)
 
     def get_success_url(self):
@@ -82,32 +104,82 @@ class EditPhotoView(mixins.LoggedInOnlyMixin, SuccessMessageMixin, UpdateView):
         return reverse("businesses:photos", kwargs={"pk": business_pk})
 
 
+class DeletePhotoView(mixins.LoggedInOnlyMixin, SuccessMessageMixin, DeleteView):
+
+    """ Delete Photo View """
+
+    model = models.Photo
+    template_name = "businesses/business_delete.html"
+    success_message = "사진이 삭제되었습니다."
+    pk_url_kwarg = "photo_pk"
+
+    # Business Author가 아니면 접근할 수 없도록 Mixin
+    def test_func(self):
+        business = models.Business.objects.get(pk=self.kwargs.get("business_pk"))
+        if self.request.user == business.user:
+            return super().test_func()
+        return False
+
+    def handle_no_permission(self):
+        messages.error(self.request, "접근 권한이 없습니다.")
+        return redirect("core:home")
+
+    def get_success_url(self):
+        business_pk = self.kwargs.get("business_pk")
+        return reverse("businesses:photos", kwargs={"pk": business_pk})
+
+
+"""
 @login_required
 def delete_photo(request, business_pk, photo_pk):
     user = request.user
     try:
         business = models.Business.objects.get(pk=business_pk)
         if business.businessman.pk != user.pk:
-            messages.error(request, "Can't delete that photo")
+            messages.error(request, "사진을 삭제할 수 없습니다.")
         else:
             models.Photo.objects.filter(pk=photo_pk).delete()
-            messages.success(request, "Photo Deleted")
+            messages.success(request, "사진이 삭제되었습니다.")
         return redirect(reverse("businesses:photos", kwargs={"pk": business_pk}))
     except models.Business.DoesNotExist:
         return redirect(reverse("core:home"))
 
+"""
 
-class DeleteBusinessView(DeleteView):
+
+class DeleteBusinessView(mixins.LoggedInOnlyMixin, UserPassesTestMixin, DeleteView):
+
+    """ Delete Business View """
 
     model = models.Business
     template_name = "businesses/business_delete.html"
     success_url = reverse_lazy("core:home")
 
+    # Business Author가 아니면 접근할 수 없도록 Mixin
+    def test_func(self):
+        business = models.Business.objects.get(pk=self.kwargs.get("pk"))
+        return self.request.user == business.user
 
-class CreateBusinessView(mixins.LoggedInOnlyMixin, FormView):
+    def handle_no_permission(self):
+        messages.error(self.request, "접근 권한이 없습니다.")
+        return redirect("core:home")
+
+
+class CreateBusinessView(mixins.LoggedInOnlyMixin, SuccessMessageMixin, FormView):
 
     form_class = forms.CreateBusinessForm
     template_name = "businesses/business_create.html"
+    success_message = "사업체가 성공적으로 등록되었습니다!"
+
+    # Businesman이 아니면 접근할 수 없도록 Mixin
+    def test_func(self):
+        if self.request.user.businessman:
+            return super().test_func(self)
+        return False
+
+    def handle_no_permission(self):
+        messages.error(self.request, "접근 권한이 없습니다.")
+        return redirect("core:home")
 
     def form_valid(self, form):
         business = form.save()
@@ -116,4 +188,3 @@ class CreateBusinessView(mixins.LoggedInOnlyMixin, FormView):
         form.save_m2m()
         messages.success(self.request, "Businesses Uploaded")
         return redirect(reverse("businesses:photos", kwargs={"pk": business.pk}))
-
