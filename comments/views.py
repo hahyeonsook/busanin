@@ -1,5 +1,5 @@
 from django.contrib import messages
-from django.shortcuts import redirect, reverse, render, HttpResponseRedirect
+from django.shortcuts import redirect, reverse, render
 from django.urls import reverse_lazy
 from django.views.generic import UpdateView, DeleteView, View
 
@@ -53,7 +53,9 @@ class EditCommentView(UserPassesTestMixin, SuccessMessageMixin, UpdateView):
     # Comment Author가 아니면 접근할 수 없도록 Mixin
     def test_func(self):
         comment = comment_models.Comment.objects.get(pk=self.kwargs.get("pk"))
-        return self.request.user == comment.user
+        if self.request.user != comment.user:
+            return super().test_func(self)
+        return True
 
     def handle_no_permission(self):
         messages.error(self.request, "접근 권한이 없습니다.")

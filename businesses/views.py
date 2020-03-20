@@ -13,7 +13,7 @@ from . import models, forms
 
 class BusinessDetailView(DetailView):
 
-    """ BusinessDetail Definition """
+    """ Business Detail View """
 
     model = models.Business
 
@@ -33,14 +33,16 @@ class EditBusinessView(mixins.LoggedInOnlyMixin, UpdateView):
         "phone",
     ]
 
-    # Business Author가 아니면 접근할 수 없도록 Mixin
+    # Business Author가 아니면 접근할 수 없도록 LoggedInOnlyMixin Override
     def test_func(self):
         business = models.Business.objects.get(pk=self.kwargs.get("pk"))
-        return self.request.user == business.user
+        if self.request.user != business.user:
+            return super().test_func(self)
+        return True
 
     def handle_no_permission(self):
         messages.error(self.request, "접근 권한이 없습니다.")
-        return redirect("core:home")
+        return super().handle_no_permission(self)
 
     def get_object(self, queryset=None):
         business = super().get_object(queryset=queryset)
@@ -114,13 +116,13 @@ class DeletePhotoView(mixins.LoggedInOnlyMixin, SuccessMessageMixin, DeleteView)
     # Business Author가 아니면 접근할 수 없도록 Mixin
     def test_func(self):
         business = models.Business.objects.get(pk=self.kwargs.get("business_pk"))
-        if self.request.user == business.user:
-            return super().test_func()
-        return False
+        if self.request.user != business.user:
+            return super().test_func(self)
+        return True
 
     def handle_no_permission(self):
         messages.error(self.request, "접근 권한이 없습니다.")
-        return redirect("core:home")
+        return super().handle_no_permission(self)
 
     def get_success_url(self):
         business_pk = self.kwargs.get("business_pk")
@@ -138,11 +140,13 @@ class DeleteBusinessView(mixins.LoggedInOnlyMixin, UserPassesTestMixin, DeleteVi
     # Business Author가 아니면 접근할 수 없도록 Mixin
     def test_func(self):
         business = models.Business.objects.get(pk=self.kwargs.get("pk"))
-        return self.request.user == business.user
+        if self.request.user != business.user:
+            return super().test_func(self)
+        return True
 
     def handle_no_permission(self):
         messages.error(self.request, "접근 권한이 없습니다.")
-        return redirect("core:home")
+        return super().handle_no_permission(self)
 
 
 class CreateBusinessView(mixins.LoggedInOnlyMixin, SuccessMessageMixin, FormView):
@@ -155,11 +159,11 @@ class CreateBusinessView(mixins.LoggedInOnlyMixin, SuccessMessageMixin, FormView
     def test_func(self):
         if self.request.user.businessman:
             return super().test_func(self)
-        return False
+        return True
 
     def handle_no_permission(self):
         messages.error(self.request, "접근 권한이 없습니다.")
-        return redirect("core:home")
+        return super().handle_no_permission(self)
 
     def form_valid(self, form):
         business = form.save()
