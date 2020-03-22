@@ -1,9 +1,10 @@
 import random
-from django.core.management.base import BaseCommand
 from django.contrib.admin.utils import flatten
+from django.core.management.base import BaseCommand
 from django_seed import Seed
-from users import models as user_models
+
 from conversations import models as conversation_models
+from users import models as user_models
 
 
 class Command(BaseCommand):

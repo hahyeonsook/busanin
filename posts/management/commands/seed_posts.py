@@ -2,6 +2,7 @@ import random
 from django.core.management.base import BaseCommand
 from django.contrib.admin.utils import flatten
 from django_seed import Seed
+
 from posts import models as post_models
 from users import models as user_models
 from businesses import models as business_models
@@ -50,4 +51,3 @@ class Command(BaseCommand):
                 )
 
         self.stdout.write(self.style.SUCCESS(f"{number} posts created!"))
-

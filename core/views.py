@@ -1,8 +1,9 @@
-from django.views.generic import View
-from django.shortcuts import render
 from django.core.paginator import Paginator
-from posts import models as posts_models
+from django.shortcuts import render
+from django.views.generic import View
+
 from businesses import models as businesses_models
+from posts import models as posts_models
 from . import forms
 
 

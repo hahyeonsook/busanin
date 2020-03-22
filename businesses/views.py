@@ -1,11 +1,10 @@
+from django.contrib import messages
+from django.contrib.auth.mixins import UserPassesTestMixin
+from django.contrib.messages.views import SuccessMessageMixin
 from django.http import Http404
-from django.views.generic import DetailView, UpdateView, DeleteView, FormView
 from django.shortcuts import redirect, reverse
 from django.urls import reverse_lazy
-from django.contrib import messages
-
-from django.contrib.messages.views import SuccessMessageMixin
-from django.contrib.auth.mixins import UserPassesTestMixin
+from django.views.generic import DetailView, UpdateView, DeleteView, FormView
 
 from core import mixins
 from . import models, forms

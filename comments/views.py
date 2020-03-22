@@ -1,15 +1,14 @@
 from django.contrib import messages
+from django.contrib.auth.mixins import UserPassesTestMixin
+from django.contrib.messages.views import SuccessMessageMixin
 from django.shortcuts import redirect, reverse, render
 from django.urls import reverse_lazy
 from django.views.generic import UpdateView, DeleteView, View
 
-from django.contrib.auth.mixins import UserPassesTestMixin
-from django.contrib.messages.views import SuccessMessageMixin
-
+from core import mixins
 from posts import models as post_models
 from . import models as comment_models
 from . import forms
-from core import mixins
 
 
 class CommentListView(View):

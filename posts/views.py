@@ -1,7 +1,7 @@
 from django.views.generic import ListView, DetailView
 
-from . import models
 from comments import forms as comments_forms
+from . import models
 
 
 class HomeView(ListView):
@@ -29,4 +29,3 @@ class PostDetail(DetailView):
         context["form"] = comments_forms.CreateCommentForm()
         context["photos"] = photos
         return self.render_to_response(context)
-

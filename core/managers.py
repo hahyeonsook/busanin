@@ -1,5 +1,5 @@
-from django.db import models
 from django.contrib.auth.models import UserManager
+from django.db import models
 
 
 class CustomModelManager(models.Manager):
@@ -12,4 +12,3 @@ class CustomModelManager(models.Manager):
 
 class CustomUserManager(CustomModelManager, UserManager):
     pass
-

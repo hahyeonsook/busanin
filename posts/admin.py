@@ -1,5 +1,6 @@
 from django.contrib import admin
 from django.utils.html import mark_safe
+
 from . import models
 
 
@@ -18,7 +19,7 @@ class PostAdmin(admin.ModelAdmin):
     list_display = (
         "user",
         "name",
-        'created',
+        "created",
     )
 
     list_filter = (

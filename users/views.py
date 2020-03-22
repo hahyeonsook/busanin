@@ -1,16 +1,15 @@
 import os
 import requests
-from django.views.generic import FormView, DetailView, UpdateView, RedirectView
-from django.contrib.auth.views import PasswordChangeView
-from django.urls import reverse_lazy
-from django.shortcuts import redirect, reverse
-from django.contrib.auth import authenticate, login, logout
-from django.core.files.base import ContentFile
-from django.views.decorators.csrf import csrf_exempt
-from django.utils.decorators import method_decorator
 from django.contrib import messages
-
+from django.contrib.auth.views import PasswordChangeView
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.messages.views import SuccessMessageMixin
+from django.core.files.base import ContentFile
+from django.shortcuts import redirect, reverse
+from django.urls import reverse_lazy
+from django.utils.decorators import method_decorator
+from django.views.decorators.csrf import csrf_exempt
+from django.views.generic import FormView, DetailView, UpdateView, RedirectView
 
 from core import mixins
 from . import forms, models

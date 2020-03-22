@@ -1,12 +1,12 @@
 from django.contrib import messages
-from django.urls import reverse_lazy
-from django.shortcuts import redirect
 from django.contrib.auth.mixins import UserPassesTestMixin, LoginRequiredMixin
+from django.shortcuts import redirect
+from django.urls import reverse_lazy
 
 
 class EmailLoginOnlyMixin(UserPassesTestMixin):
 
-    """ 사용자가 Email User가 아닐 때 보여주는 View로 제한하는 Mixin"""
+    """ 사용자가 Email User일 때 보여주는 View로 제한하는 Mixin"""
 
     def test_func(self):
         return not self.request.user.login_method == "email"
@@ -38,7 +38,10 @@ class LoggedInOnlyMixin(LoginRequiredMixin):
 
 class NotFormSuceesMessageMixin:
 
-    """ Form이 아닌 GET하는 View들에서 SuccessMessage를 추가해주는 View로 만드는 Mixin """
+    """
+    Form이 아닌 GET하는 View들에서 SuccessMessage를 추가해주는 View로 만드는 Mixin
+    명령이 수행되기 전 message를 출력한다. 수정 필요함.
+    """
 
     success_message = ""
 
@@ -48,4 +51,3 @@ class NotFormSuceesMessageMixin:
             messages.success(self.request, self.success_message)
 
         return super().get(request, *args, **kwargs)
-
