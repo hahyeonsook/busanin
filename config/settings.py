@@ -31,7 +31,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = [
     "busanin.be",
-    ".elasticbeanstalk.com",
     "127.0.0.1",
 ]
 

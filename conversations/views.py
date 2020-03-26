@@ -1,14 +1,14 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q
 from django.http import Http404
 from django.shortcuts import render, redirect, reverse
 from django.views.generic import View
 
 from users import models as user_models
-from core import mixins
 from . import models
 
 
-class GoConversationView(mixins.LoginRequiredMixin, View):
+class GoConversationView(LoginRequiredMixin, View):
 
     """ Conversation detail or create 하는 View """
 
