@@ -4,20 +4,17 @@
 
 ## Program Stacks
 
-**Backend**
+### Backend
 
 - Python 3.7
 - Django 2.2.5
 - Postgres
 - AWS Elastic Beanstalk
 - AWS S3
+- Route53
 
-**Frontend**
+### Frontend
 
 - css
 - HTML
 - Tailwinds CSS
-
-### Running
-
-[![busanin](https://img.youtube.com/vi/NV_fJ2Fq48E/0.jpg)](https://www.youtube.com/watch?v=nTb7JKrVl7Q&t=268s)
